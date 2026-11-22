@@ -7,6 +7,7 @@ import '@fontsource/baloo-bhaijaan-2/latin-800.css';
 import { MenuScene } from './scenes/MenuScene';
 import { GameScene } from './scenes/GameScene';
 import { AlbumScene } from './scenes/AlbumScene';
+import { EditorScene } from './scenes/EditorScene';
 
 function startGame() {
 new Phaser.Game({
@@ -19,7 +20,7 @@ new Phaser.Game({
     width: 540,
     height: 900
   },
-  scene: [MenuScene, GameScene, AlbumScene]
+  scene: [MenuScene, GameScene, AlbumScene, EditorScene]
 });
 }
 

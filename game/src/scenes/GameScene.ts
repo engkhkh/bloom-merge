@@ -7,6 +7,7 @@ import { Sfx } from '../audio';
 import { t, isRTL, lang } from '../i18n';
 import { dailyLevel, dailySeed, seededRandom, recordDaily, dailyStatus, dailyAlbum } from '../daily';
 import { recordMerge, updateStats, Visitor } from '../album';
+import { Custom, toLevel } from '../custom';
 
 const HEARTS = ['❤️', '💙', '💛', '💚'];
 const P_COLORS = ['#d63b3b', '#2f6fd6', '#c99700', '#2f9a3a'];
@@ -31,6 +32,7 @@ export class GameScene extends Phaser.Scene {
   private finished = false;
   private daily = false;
   private rng: () => number = Math.random;
+  private custom: Custom | null = null;
   private family = 0;          // number of players in Family Garden (0 = normal game)
   private turn = 0;
   private pScores: number[] = [];
@@ -39,8 +41,9 @@ export class GameScene extends Phaser.Scene {
 
   constructor() { super('Game'); }
 
-  init(data: { levelId: number; daily?: boolean; family?: number }) {
+  init(data: { levelId: number; daily?: boolean; family?: number; custom?: Custom }) {
     this.daily = !!data.daily;
+    this.custom = data.custom ?? null;
     this.family = data.family ?? 0;
     this.turn = 0;
     this.pScores = new Array(this.family).fill(0);
@@ -48,9 +51,10 @@ export class GameScene extends Phaser.Scene {
     this.toasting = false;
     this.level = this.family
       ? { id: -1, goalLevel: 5, goalCount: 99, moves: this.family * 10, startSeeds: 10 }
+      : this.custom ? toLevel(this.custom)
       : this.daily ? dailyLevel() : LEVELS.find(l => l.id === data.levelId) ?? LEVELS[0];
     // The daily puzzle is the same for everyone, so it uses a seeded generator and no Kid Mode
-    this.rng = this.daily ? seededRandom(dailySeed()) : Math.random;
+    this.rng = this.custom ? seededRandom(this.custom.seed) : this.daily ? seededRandom(dailySeed()) : Math.random;
     this.kidMode = this.daily || this.family ? false : load().kidMode;
     this.movesLeft = this.level.moves;
     this.score = 0;
@@ -72,7 +76,7 @@ export class GameScene extends Phaser.Scene {
     const back = this.add.text(isRTL() ? w - 24 : 24, 18, s.menu, ts(24, '#ffffff', { stroke: '#2f5d2a', strokeThickness: 5 }))
       .setOrigin(isRTL() ? 1 : 0, 0);
     back.setInteractive({ useHandCursor: true }).on('pointerup', () => this.scene.start('Menu'));
-    this.add.text(w / 2, 36, this.family ? s.familyTitle : this.daily ? s.dailyTitle : s.level(this.level.id), ts(34, '#ffffff', {
+    this.add.text(w / 2, 36, this.family ? s.familyTitle : this.custom ? s.customTitle : this.daily ? s.dailyTitle : s.level(this.level.id), ts(34, '#ffffff', {
       fontStyle: 'bold', stroke: '#2f5d2a', strokeThickness: 7
     })).setOrigin(0.5);
     this.goalText = this.add.text(w / 2, 112, '', ts(28, '#2f5d2a', { fontStyle: 'bold' })).setOrigin(0.5);
@@ -244,7 +248,7 @@ export class GameScene extends Phaser.Scene {
     if (won) {
       const used = this.level.moves - this.movesLeft;
       stars = this.kidMode ? 3 : used <= this.level.moves * 0.5 ? 3 : used <= this.level.moves * 0.75 ? 2 : 1;
-      if (this.daily) {
+      if (this.daily || this.custom) {
         this.score += this.movesLeft * 10; // bonus for moves left over
       } else {
         const data = load();
@@ -280,16 +284,16 @@ export class GameScene extends Phaser.Scene {
         this.add.text(w / 2, h / 2 - 15, s.tryAgain, ts(32, '#5a3b22')).setOrigin(0.5).setDepth(22);
       }
 
-      const next = !this.daily && won && this.level.id < LEVELS.length;
-      const retry = !won || this.daily;
+      const next = !this.daily && !this.custom && won && this.level.id < LEVELS.length;
+      const retry = !won || this.daily || !!this.custom;
       const label = next ? s.next : retry ? s.retry : s.menuBtn;
       const b1 = button(this, w / 2, h / 2 + 70, label, () => {
         if (next) this.scene.start('Game', { levelId: this.level.id + 1 });
-        else if (retry) this.scene.restart({ levelId: this.level.id, daily: this.daily });
+        else if (retry) this.scene.restart({ levelId: this.level.id, daily: this.daily, custom: this.custom ?? undefined });
         else this.scene.start('Menu');
       }, 280, 0xe0762b);
       b1.container.setDepth(22);
-      const b2 = button(this, w / 2, h / 2 + 145, s.menuBtn, () => this.scene.start('Menu'), 280);
+      const b2 = button(this, w / 2, h / 2 + 145, this.custom ? s.editorTitle : s.menuBtn, () => this.custom ? this.scene.start('Editor', { custom: this.custom }) : this.scene.start('Menu'), 280);
       b2.container.setDepth(22);
     });
   }

@@ -82,10 +82,12 @@ export class MenuScene extends Phaser.Scene {
       .setOrigin(0.5).setVisible(found > 0);
 
     // Settings
-    const kid = button(this, w / 2, 712, s.kidMode(data.kidMode), () => {
+    button(this, w / 2 - fx * 88, 712, s.editor, () => this.scene.start('Editor'), 164, 0x8e5bd6);
+    const kid = button(this, w / 2 + fx * 88, 712, s.kidMode(data.kidMode), () => {
       const d = load(); d.kidMode = !d.kidMode; save(d);
-      kid.text.setText(s.kidMode(d.kidMode));
-    }, 340);
+      kid.text.setText(s.kidMode(d.kidMode)).setScale(1);
+      if (kid.text.width > 140) kid.text.setScale(140 / kid.text.width);
+    }, 164, 0x4e8a46);
 
     const snd = button(this, w / 2 - 88, 786, data.sound === false ? s.soundOff : s.sound, () => {
       snd.text.setText(toggleSound() ? s.sound : s.soundOff);

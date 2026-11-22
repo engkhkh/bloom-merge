@@ -46,6 +46,13 @@ const STR = {
     winner: (p: string) => `${p} wins! 🏆`,
     tie: 'It\'s a tie! 🤝',
     playAgain: 'Play again ↻',
+    editor: '✏️ Create',
+    editorTitle: 'Level Editor',
+    edGoal: 'Grow', edCount: 'How many', edMoves: 'Moves', edSeeds: 'Start seeds',
+    edDifficulty: 'Difficulty', edLevels: ['Easy', 'Medium', 'Hard', 'Very hard'],
+    edPlay: '▶  Play this puzzle', edCopy: '📋 Copy code', edNewBoard: '🎲 New board',
+    edEnter: '🔑 Enter a friend\'s code', edCopied: 'Code copied! Send it to a friend.', edBadCode: 'That code doesn\'t look right',
+    customTitle: 'Custom puzzle',
     familyHint: 'Take turns: one move each. Merges score points!',
     seasons: { spring: 'Spring', summer: 'Summer', autumn: 'Autumn', winter: 'Winter', ramadan: 'Ramadan Kareem', eid: 'Eid Mubarak' } as Record<string, string>
   },
@@ -91,6 +98,13 @@ const STR = {
     winner: (p: string) => `${p} فاز! 🏆`,
     tie: 'تعادل! 🤝',
     playAgain: 'العب مرة أخرى ↻',
+    editor: '✏️ صمّم',
+    editorTitle: 'محرر المراحل',
+    edGoal: 'ازرع', edCount: 'العدد', edMoves: 'الحركات', edSeeds: 'بذور البداية',
+    edDifficulty: 'الصعوبة', edLevels: ['سهل', 'متوسط', 'صعب', 'صعب جدًا'],
+    edPlay: '▶  العب هذا اللغز', edCopy: '📋 انسخ الرمز', edNewBoard: '🎲 لوح جديد',
+    edEnter: '🔑 أدخل رمز صديق', edCopied: 'تم نسخ الرمز! أرسله لصديق.', edBadCode: 'الرمز غير صحيح',
+    customTitle: 'لغز مخصص',
     familyHint: 'بالدور: حركة لكل لاعب. الدمج يعطي نقاطًا!',
     seasons: { spring: 'الربيع', summer: 'الصيف', autumn: 'الخريف', winter: 'الشتاء', ramadan: 'رمضان كريم', eid: 'عيد مبارك' } as Record<string, string>
   }

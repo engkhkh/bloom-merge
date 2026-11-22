@@ -186,6 +186,7 @@ export function button(scene: Phaser.Scene, x: number, y: number, label: string,
   g.fillStyle(color, 1); g.fillRoundedRect(-w / 2, -28, w, 56, 28);
   g.fillStyle(0xffffff, 0.18); g.fillRoundedRect(-w / 2 + 10, -24, w - 20, 18, 9);
   const t = scene.add.text(0, 0, label, ts(26, '#ffffff', { fontStyle: 'bold' })).setOrigin(0.5);
+  if (t.width > w - 24) t.setScale((w - 24) / t.width); // shrink long labels to fit
   c.add([g, t]);
   c.setSize(w, 56).setInteractive({ useHandCursor: true });
   c.on('pointerdown', () => c.setScale(0.95));

@@ -12,6 +12,7 @@ One codebase runs on the **web**, **Android**, **iPhone** and **Windows/Mac**.
 - 👪 Family Garden: 2–4 players take turns on one device
 - 📖 Garden Album: 12 animal visitors to collect
 - 🌸 ☀️ 🍂 ❄️ 🌙 🎉 Seasonal gardens: spring, summer, autumn, winter, Ramadan and Eid, chosen by date
+- ✏️ Level Editor: make your own puzzle and share it with a short code
 - 🧸 Kid Mode: no move limit, no pressure
 - English and Arabic (right-to-left)
 - Works offline, no ads, no tracking, no personal data ([privacy policy](game/public/privacy.html))

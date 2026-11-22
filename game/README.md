@@ -64,6 +64,9 @@ It then opens full-screen like a normal app and works offline.
 - **Windows app** tested: `npm run desktop:build` makes it, or download it from GitHub Actions
 - **GitHub Actions** workflow that builds the web, Windows and Android versions automatically
 
+### Added in version 0.7
+- **✏️ Level Editor:** pick the plant to grow, how many, moves and starting seeds. It shows the difficulty and a share code like `BM-3-2-40-8-1036`. Friends type the code under "Enter a friend's code" and get the exact same board.
+
 ## Build the Android app (Windows PC)
 1. Install **Android Studio** from developer.android.com and open it once so it finishes setup.
 2. In this folder run:
@@ -101,3 +104,4 @@ Week 5: art and sound. Week 7: PWA and web release. Week 8: Capacitor mobile app
 - `src/album.ts` – Garden Album visitors and how to unlock them
 - `src/scenes/AlbumScene.ts` – the Album screen
 - `src/season.ts` – seasons, Ramadan and Eid dates, colours
+- `src/custom.ts`, `src/scenes/EditorScene.ts` – Level Editor and share codes
