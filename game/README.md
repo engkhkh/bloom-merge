@@ -77,6 +77,34 @@ It then opens full-screen like a normal app and works offline.
 3. Android Studio opens the project. Plug in your phone (with USB debugging on) and press ▶ Run.
 4. For a file to share or upload to Google Play: **Build → Generate Signed App Bundle / APK**.
 
+## Publish on Google Play (signed release)
+Google Play needs the app signed with **your own key**. Make it once and keep it safe: if you lose it you can't update the app.
+
+1. Create the key (needs Java, which comes with Android Studio). In a terminal:
+   ```
+   keytool -genkeypair -v -keystore bloom-merge.jks -alias bloom -keyalg RSA -keysize 2048 -validity 10000
+   ```
+   Choose a password and answer the questions. **Back up `bloom-merge.jks` and the password somewhere safe, and never put them in the repo.**
+2. Turn the key into text (PowerShell):
+   ```
+   [Convert]::ToBase64String([IO.File]::ReadAllBytes("bloom-merge.jks")) | Set-Clipboard
+   ```
+3. On GitHub open **Settings → Secrets and variables → Actions → New repository secret** and add:
+   | Name | Value |
+   |---|---|
+   | `ANDROID_KEYSTORE_BASE64` | paste from step 2 |
+   | `ANDROID_KEYSTORE_PASSWORD` | your keystore password |
+   | `ANDROID_KEY_ALIAS` | `bloom` |
+   | `ANDROID_KEY_PASSWORD` | your key password (same as above if you pressed Enter) |
+4. The next build adds **bloom-merge-play.aab** (upload this to Google Play) and a signed **bloom-merge-android-release.apk**.
+
+## Make a release
+```
+git tag v0.7.0
+git push origin v0.7.0
+```
+GitHub builds everything and creates a **Release** page with the Windows installer, the Windows portable .exe and the Android app attached. Update `"version"` in `package.json` first for each new release.
+
 ## Build the iPhone app
 This needs a **Mac** with **Xcode**. Run `npm install` then `npm run ios`, and press ▶ in Xcode.
 
