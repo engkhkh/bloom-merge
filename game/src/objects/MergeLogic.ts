@@ -1,0 +1,65 @@
+// Pure game rules: no drawing here, so they are easy to test.
+
+export const ITEMS = ['🌰', '🌱', '🌷', '🌻', '🌳', '🍎'];
+export const MAX_LEVEL = ITEMS.length - 1;
+
+export type Cell = number | null; // item level 0..MAX_LEVEL, or empty
+
+export class Board {
+  cells: Cell[];
+  constructor(public size: number, private rng: () => number = Math.random) {
+    this.cells = new Array(size * size).fill(null);
+  }
+
+  index(col: number, row: number) { return row * this.size + col; }
+
+  emptyCells(): number[] {
+    return this.cells.flatMap((c, i) => (c === null ? [i] : []));
+  }
+
+  /** Put a seed in a random empty cell. Returns the cell index, or -1 if full. */
+  spawn(level = 0): number {
+    const empty = this.emptyCells();
+    if (empty.length === 0) return -1;
+    const i = empty[Math.floor(this.rng() * empty.length)];
+    this.cells[i] = level;
+    return i;
+  }
+
+  /**
+   * Try to move item from -> to.
+   * Same item  => merge into the next level.
+   * Empty cell => simple move.
+   */
+  move(from: number, to: number): 'merge' | 'move' | 'invalid' {
+    if (from === to) return 'invalid';
+    const a = this.cells[from];
+    const b = this.cells[to];
+    if (a === null) return 'invalid';
+    if (b === null) {
+      this.cells[to] = a;
+      this.cells[from] = null;
+      return 'move';
+    }
+    if (a === b && a < MAX_LEVEL) {
+      this.cells[to] = a + 1;
+      this.cells[from] = null;
+      return 'merge';
+    }
+    return 'invalid';
+  }
+
+  count(level: number) { return this.cells.filter(c => c === level).length; }
+
+  /** True when no merge is possible and the board is full. */
+  isStuck(): boolean {
+    if (this.emptyCells().length > 0) return false;
+    const seen = new Set<number>();
+    for (const c of this.cells) {
+      if (c === null || c === MAX_LEVEL) continue;
+      if (seen.has(c)) return false;
+      seen.add(c);
+    }
+    return true;
+  }
+}

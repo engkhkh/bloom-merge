@@ -1,0 +1,108 @@
+// English and Arabic text. Add more languages by adding another block.
+import { load, save } from './save';
+
+export type Lang = 'en' | 'ar';
+
+const STR = {
+  en: {
+    title: 'Bloom Merge',
+    play: (n: number) => `▶  Play level ${n}`,
+    daily: '📅 Daily Challenge',
+    dailyDone: (s: number) => `📅 Daily done! Best ${s}`,
+    streak: (n: number) => `🔥 Streak: ${n} day${n === 1 ? '' : 's'}`,
+    kidMode: (on: boolean) => `Kid Mode: ${on ? 'ON 🧸' : 'OFF'}`,
+    kidHint: 'Kid Mode: no move limit, play forever',
+    sound: '🔊 Sound', soundOff: '🔇 Sound',
+    music: '🎵 Music', musicOff: '🚫 Music',
+    lang: 'العربية',
+    menu: '⬅ Menu',
+    level: (n: number) => `Level ${n}`,
+    dailyTitle: 'Daily Challenge',
+    goal: (item: string, name: string, have: number, need: number) => `Goal: ${item} ${name}  ${have}/${need}`,
+    moves: (m: string) => `Moves: ${m}`,
+    score: (s: number) => `Score: ${s}`,
+    hint: 'Drag a plant onto the same plant to grow it',
+    won: 'Your garden bloomed!',
+    lost: 'Out of moves',
+    tryAgain: '🍂 Try again!',
+    next: 'Next level ▶',
+    retry: 'Retry ↻',
+    menuBtn: 'Menu',
+    best: (s: number) => `Today's best: ${s}`,
+    newBest: '🏆 New best!',
+    items: ['Seed', 'Sprout', 'Tulip', 'Sunflower', 'Tree', 'Apple Tree'],
+    album: '📖 Album',
+    family: '👪 Family',
+    albumTitle: 'Garden Album',
+    albumCount: (n: number, of: number) => `${n} of ${of} visitors found`,
+    visited: (e: string, n: string) => `${e} A ${n} visited your garden!`,
+    familyTitle: 'Family Garden',
+    howMany: 'How many players?',
+    players: (n: number) => `${n} 👤`,
+    cancel: 'Cancel',
+    turn: (p: string) => `${p}'s turn`,
+    player: (i: number) => `Player ${i}`,
+    turnsLeft: (n: number) => `Turns left: ${n}`,
+    winner: (p: string) => `${p} wins! 🏆`,
+    tie: 'It\'s a tie! 🤝',
+    playAgain: 'Play again ↻',
+    familyHint: 'Take turns: one move each. Merges score points!',
+    seasons: { spring: 'Spring', summer: 'Summer', autumn: 'Autumn', winter: 'Winter', ramadan: 'Ramadan Kareem', eid: 'Eid Mubarak' } as Record<string, string>
+  },
+  ar: {
+    title: 'حديقة الدمج',
+    play: (n: number) => `▶  العب المرحلة ${n}`,
+    daily: '📅 تحدي اليوم',
+    dailyDone: (s: number) => `📅 تم تحدي اليوم! أفضل نتيجة ${s}`,
+    streak: (n: number) => `🔥 أيام متتالية: ${n}`,
+    kidMode: (on: boolean) => `وضع الأطفال: ${on ? 'مفعّل 🧸' : 'متوقف'}`,
+    kidHint: 'وضع الأطفال: بدون حد للحركات، العب كما تحب',
+    sound: '🔊 الصوت', soundOff: '🔇 الصوت',
+    music: '🎵 الموسيقى', musicOff: '🚫 الموسيقى',
+    lang: 'English',
+    menu: 'القائمة ➡',
+    level: (n: number) => `المرحلة ${n}`,
+    dailyTitle: 'تحدي اليوم',
+    goal: (item: string, name: string, have: number, need: number) => `الهدف: ${name} ${item}  ${have}/${need}`,
+    moves: (m: string) => `الحركات: ${m}`,
+    score: (s: number) => `النقاط: ${s}`,
+    hint: 'اسحب النبتة إلى نبتة مثلها لتكبر',
+    won: 'أزهرت حديقتك!',
+    lost: 'انتهت الحركات',
+    tryAgain: '🍂 حاول مرة أخرى!',
+    next: 'المرحلة التالية ◀',
+    retry: 'إعادة ↻',
+    menuBtn: 'القائمة',
+    best: (s: number) => `أفضل نتيجة اليوم: ${s}`,
+    newBest: '🏆 رقم قياسي جديد!',
+    items: ['بذرة', 'برعم', 'توليب', 'عباد الشمس', 'شجرة', 'شجرة تفاح'],
+    album: '📖 الألبوم',
+    family: '👪 العائلة',
+    albumTitle: 'ألبوم الحديقة',
+    albumCount: (n: number, of: number) => `وجدت ${n} من ${of} زوار`,
+    visited: (e: string, n: string) => `زائر جديد في حديقتك: ${n} ${e}`,
+    familyTitle: 'حديقة العائلة',
+    howMany: 'كم عدد اللاعبين؟',
+    players: (n: number) => `${n} 👤`,
+    cancel: 'إلغاء',
+    turn: (p: string) => `دور ${p}`,
+    player: (i: number) => `اللاعب ${i}`,
+    turnsLeft: (n: number) => `الأدوار المتبقية: ${n}`,
+    winner: (p: string) => `${p} فاز! 🏆`,
+    tie: 'تعادل! 🤝',
+    playAgain: 'العب مرة أخرى ↻',
+    familyHint: 'بالدور: حركة لكل لاعب. الدمج يعطي نقاطًا!',
+    seasons: { spring: 'الربيع', summer: 'الصيف', autumn: 'الخريف', winter: 'الشتاء', ramadan: 'رمضان كريم', eid: 'عيد مبارك' } as Record<string, string>
+  }
+};
+
+export function lang(): Lang { return load().lang === 'ar' ? 'ar' : 'en'; }
+export function t() { return STR[lang()]; }
+export function isRTL() { return lang() === 'ar'; }
+
+export function toggleLang(): Lang {
+  const d = load();
+  d.lang = d.lang === 'ar' ? 'en' : 'ar';
+  save(d);
+  return d.lang;
+}
