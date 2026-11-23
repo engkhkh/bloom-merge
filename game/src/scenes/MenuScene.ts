@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
-import { LEVELS } from '../levels';
+import { LEVELS, LEVELS_PER_WORLD } from '../levels';
+
+let menuPage: number | null = null; // which world page the menu shows
 import { ITEMS } from '../objects/MergeLogic';
 import { load, save } from '../save';
 import { drawBackground, button, ts } from '../art';
@@ -37,19 +39,36 @@ export class MenuScene extends Phaser.Scene {
     this.tweens.add({ targets: title, y: 92, duration: 1400, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
     this.add.text(w / 2, 152, ITEMS.join(' → '), { fontSize: '26px', color: '#2f5d2a', fontStyle: 'bold', stroke: '#ffffff', strokeThickness: 4 }).setOrigin(0.5);
 
-    // Level buttons: 5 columns x 2 rows
+    // Level buttons: one page (world) of 10 at a time, 5 columns x 2 rows
+    const worlds = Math.ceil(LEVELS.length / LEVELS_PER_WORLD);
+    if (menuPage === null) menuPage = Math.min(worlds - 1, Math.floor((Math.min(data.unlocked, LEVELS.length) - 1) / LEVELS_PER_WORLD));
+    const page = menuPage;
+    this.add.text(w / 2, 196, s.world(page + 1, s.worldNames[page] ?? ''), ts(22, '#ffffff', {
+      fontStyle: 'bold', stroke: '#2f5d2a', strokeThickness: 5
+    })).setOrigin(0.5);
+    const arrow = (dir: number, x: number) => {
+      const target = page + dir;
+      const ok = target >= 0 && target < worlds;
+      const a = this.add.text(x, 300, dir < 0 ? '◀' : '▶', ts(34, '#ffffff', { stroke: '#2f5d2a', strokeThickness: 6, rtl: false }))
+        .setOrigin(0.5).setAlpha(ok ? 1 : 0.25);
+      if (ok) a.setInteractive({ useHandCursor: true }).on('pointerup', () => { menuPage = target; this.scene.restart(); });
+    };
+    arrow(isRTL() ? 1 : -1, 22);
+    arrow(isRTL() ? -1 : 1, w - 22);
+
     const cols = 5, cell = 92;
-    LEVELS.forEach((lvl, i) => {
+    LEVELS.slice(page * LEVELS_PER_WORLD, (page + 1) * LEVELS_PER_WORLD).forEach((lvl, i) => {
       const x = w / 2 + ((i % cols) - (cols - 1) / 2) * cell;
-      const y = 240 + Math.floor(i / cols) * 106;
+      const y = 250 + Math.floor(i / cols) * 102;
       const locked = lvl.id > data.unlocked;
+      const rocky = !!lvl.rocks?.length;
       const g = this.add.graphics();
       g.fillStyle(0x000000, 0.2); g.fillCircle(x, y + 5, 36);
-      g.fillStyle(locked ? 0xa7b8a2 : 0xfff3c4, 1); g.fillCircle(x, y, 36);
-      g.lineStyle(5, locked ? 0x7d8f79 : 0xe0a526, 1); g.strokeCircle(x, y, 36);
+      g.fillStyle(locked ? 0xa7b8a2 : rocky ? 0xe3e6ea : 0xfff3c4, 1); g.fillCircle(x, y, 36);
+      g.lineStyle(5, locked ? 0x7d8f79 : rocky ? 0x7d848c : 0xe0a526, 1); g.strokeCircle(x, y, 36);
       this.add.text(x, y, locked ? '🔒' : String(lvl.id), ts(locked ? 26 : 32, '#5a3b22', { fontStyle: 'bold', rtl: false })).setOrigin(0.5);
       const stars = data.stars[lvl.id] ?? 0;
-      this.add.text(x, y + 48, stars ? '⭐'.repeat(stars) : '', { fontSize: '15px' }).setOrigin(0.5);
+      this.add.text(x, y + 46, stars ? '⭐'.repeat(stars) : '', { fontSize: '15px' }).setOrigin(0.5);
       if (!locked) {
         const hit = this.add.circle(x, y, 40, 0xffffff, 0.001).setInteractive({ useHandCursor: true });
         hit.on('pointerup', () => { startMusic(); this.scene.start('Game', { levelId: lvl.id }); });

@@ -79,7 +79,7 @@ Plant your first seed today! 🌻
 | `icon-512.png` | Store icon (512×512) |
 
 ## Before you publish
-- [x] Privacy policy: `game/public/privacy.html` (English + Arabic). Replace your-email@example.com with your real email, then use its web address (…/privacy.html) in the store forms.
+- [x] Privacy policy: `game/public/privacy.html` (English + Arabic). Contact email: khilel208@gmail.com. Use its web address https://engkhkh.github.io/bloom-merge/privacy.html in the store forms.
 - [ ] Google Play: fill in the "Target audience and content" form (includes children → Families policy)
 - [ ] Apple: set the age rating to 4+
 - [ ] Add a parent gate if you ever add in-app purchases

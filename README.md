@@ -7,7 +7,7 @@ A calm merge-and-grow garden puzzle for the whole family. Drag two matching plan
 One codebase runs on the **web**, **Android**, **iPhone** and **Windows/Mac**.
 
 ## Features
-- 10 levels with goals, move limits and stars
+- 20 levels in two worlds (Sunny Meadow and Rocky Garden, with rock obstacles), with goals, move limits and stars
 - 📅 Daily Challenge: the same puzzle for everyone each day, with best score and 🔥 streak
 - 👪 Family Garden: 2–4 players take turns on one device
 - 📖 Garden Album: 12 animal visitors to collect

@@ -54,6 +54,9 @@ const STR = {
     edEnter: '🔑 Enter a friend\'s code', edCopied: 'Code copied! Send it to a friend.', edBadCode: 'That code doesn\'t look right',
     customTitle: 'Custom puzzle',
     tutorial: 'Drag the seed onto the other seed!',
+    world: (n: number, name: string) => `World ${n}: ${name}`,
+    worldNames: ['Sunny Meadow', 'Rocky Garden'],
+    rockTip: 'Rocks can\'t be moved. Plan around them!',
     familyHint: 'Take turns: one move each. Merges score points!',
     seasons: { spring: 'Spring', summer: 'Summer', autumn: 'Autumn', winter: 'Winter', ramadan: 'Ramadan Kareem', eid: 'Eid Mubarak' } as Record<string, string>
   },
@@ -107,6 +110,9 @@ const STR = {
     edEnter: '🔑 أدخل رمز صديق', edCopied: 'تم نسخ الرمز! أرسله لصديق.', edBadCode: 'الرمز غير صحيح',
     customTitle: 'لغز مخصص',
     tutorial: 'اسحب البذرة إلى البذرة الأخرى!',
+    world: (n: number, name: string) => `العالم ${n}: ${name}`,
+    worldNames: ['المرج المشمس', 'الحديقة الصخرية'],
+    rockTip: 'الصخور لا تتحرك. خطط حولها!',
     familyHint: 'بالدور: حركة لكل لاعب. الدمج يعطي نقاطًا!',
     seasons: { spring: 'الربيع', summer: 'الصيف', autumn: 'الخريف', winter: 'الشتاء', ramadan: 'رمضان كريم', eid: 'عيد مبارك' } as Record<string, string>
   }

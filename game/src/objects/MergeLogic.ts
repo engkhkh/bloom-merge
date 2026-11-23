@@ -7,6 +7,8 @@ export type Cell = number | null; // item level 0..MAX_LEVEL, or empty
 
 export class Board {
   cells: Cell[];
+  /** Cells covered by rocks: nothing can be placed or moved there */
+  blocked = new Set<number>();
   constructor(public size: number, private rng: () => number = Math.random) {
     this.cells = new Array(size * size).fill(null);
   }
@@ -14,7 +16,7 @@ export class Board {
   index(col: number, row: number) { return row * this.size + col; }
 
   emptyCells(): number[] {
-    return this.cells.flatMap((c, i) => (c === null ? [i] : []));
+    return this.cells.flatMap((c, i) => (c === null && !this.blocked.has(i) ? [i] : []));
   }
 
   /** Put a seed in a random empty cell. Returns the cell index, or -1 if full. */
@@ -32,7 +34,7 @@ export class Board {
    * Empty cell => simple move.
    */
   move(from: number, to: number): 'merge' | 'move' | 'invalid' {
-    if (from === to) return 'invalid';
+    if (from === to || this.blocked.has(to) || this.blocked.has(from)) return 'invalid';
     const a = this.cells[from];
     const b = this.cells[to];
     if (a === null) return 'invalid';

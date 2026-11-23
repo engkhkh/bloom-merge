@@ -194,3 +194,15 @@ export function button(scene: Phaser.Scene, x: number, y: number, label: string,
   c.on('pointerup', () => { c.setScale(1); onClick(); });
   return { container: c, text: t };
 }
+
+/** A grey garden rock sitting in a soil cell */
+export function drawRock(scene: Phaser.Scene, cx: number, cy: number, s: number) {
+  const g = scene.add.graphics().setDepth(-3);
+  g.fillStyle(0x000000, 0.25); g.fillEllipse(cx, cy + s * 0.24, s * 0.78, s * 0.22);
+  g.fillStyle(0x7d848c, 1);
+  g.fillEllipse(cx - s * 0.08, cy + s * 0.04, s * 0.62, s * 0.5);
+  g.fillEllipse(cx + s * 0.14, cy + s * 0.1, s * 0.46, s * 0.38);
+  g.fillStyle(0x9aa2ab, 1); g.fillEllipse(cx - s * 0.12, cy - s * 0.04, s * 0.42, s * 0.3);
+  g.fillStyle(0xc2c8ce, 1); g.fillEllipse(cx - s * 0.18, cy - s * 0.1, s * 0.16, s * 0.09);
+  g.fillStyle(0x6aa84f, 1); g.fillEllipse(cx + s * 0.2, cy - s * 0.04, s * 0.14, s * 0.07); // moss
+}

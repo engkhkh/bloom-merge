@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { Board, ITEMS } from '../objects/MergeLogic';
 import { LEVELS, Level } from '../levels';
 import { load, save } from '../save';
-import { drawBackground, drawBoardBed, drawCell, makeBadge, button, ts, FONT } from '../art';
+import { drawBackground, drawBoardBed, drawCell, drawRock, makeBadge, button, ts, FONT } from '../art';
 import { Sfx, buzz } from '../audio';
 import { t, isRTL, lang } from '../i18n';
 import { dailyLevel, dailySeed, seededRandom, recordDaily, dailyStatus, dailyAlbum } from '../daily';
@@ -92,6 +92,10 @@ export class GameScene extends Phaser.Scene {
       drawCell(this, x, y, CELL);
     }
 
+    // Rocks block cells (World 2 levels)
+    this.board.blocked = new Set(this.level.rocks ?? []);
+    this.board.blocked.forEach(i => { const { x, y } = this.cellPos(i); drawRock(this, x, y, CELL); });
+
     this.tiles = new Array(SIZE * SIZE).fill(null);
     for (let i = 0; i < this.level.startSeeds; i++) this.spawnTile();
 
@@ -117,6 +121,12 @@ export class GameScene extends Phaser.Scene {
     this.lastAction = this.time.now;
     this.time.addEvent({ delay: 1000, loop: true, callback: () => this.maybeHint() });
     if (this.level.id === 1 && !this.family && !load().tutorialDone) this.time.delayedCall(600, () => this.showTutorial());
+    if (this.level.id === 11) {
+      const tip = this.add.text(this.scale.width / 2, 238, t().rockTip, ts(21, '#ffffff', {
+        fontStyle: 'bold', backgroundColor: '#6b737b', padding: { x: 16, y: 8 }
+      })).setOrigin(0.5).setDepth(25);
+      this.tweens.add({ targets: tip, alpha: 0, delay: 4000, duration: 600, onComplete: () => tip.destroy() });
+    }
   }
 
   private maybeHint() {

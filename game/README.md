@@ -84,6 +84,11 @@ It then opens full-screen like a normal app and works offline.
 - **Vibration** on merges (stronger for big plants). It follows the Sound setting.
 - **Music pauses** when the phone locks or you switch apps, and resumes when you come back
 
+### Added in version 0.9
+- **World 2: Rocky Garden.** Levels 11–20 have rocks that block cells, so there's less room to work with. Use ◀ ▶ on the menu to switch worlds.
+- Every level was checked with a simulated player (300+ games each): all 20 are winnable, and in World 2 three stars need near-perfect play
+- Privacy policy contact email: khilel208@gmail.com
+
 ## Publish on Google Play (signed release)
 Google Play needs the app signed with **your own key**. Make it once and keep it safe: if you lose it you can't update the app.
 
