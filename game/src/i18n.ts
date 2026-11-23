@@ -53,6 +53,7 @@ const STR = {
     edPlay: '▶  Play this puzzle', edCopy: '📋 Copy code', edNewBoard: '🎲 New board',
     edEnter: '🔑 Enter a friend\'s code', edCopied: 'Code copied! Send it to a friend.', edBadCode: 'That code doesn\'t look right',
     customTitle: 'Custom puzzle',
+    tutorial: 'Drag the seed onto the other seed!',
     familyHint: 'Take turns: one move each. Merges score points!',
     seasons: { spring: 'Spring', summer: 'Summer', autumn: 'Autumn', winter: 'Winter', ramadan: 'Ramadan Kareem', eid: 'Eid Mubarak' } as Record<string, string>
   },
@@ -105,6 +106,7 @@ const STR = {
     edPlay: '▶  العب هذا اللغز', edCopy: '📋 انسخ الرمز', edNewBoard: '🎲 لوح جديد',
     edEnter: '🔑 أدخل رمز صديق', edCopied: 'تم نسخ الرمز! أرسله لصديق.', edBadCode: 'الرمز غير صحيح',
     customTitle: 'لغز مخصص',
+    tutorial: 'اسحب البذرة إلى البذرة الأخرى!',
     familyHint: 'بالدور: حركة لكل لاعب. الدمج يعطي نقاطًا!',
     seasons: { spring: 'الربيع', summer: 'الصيف', autumn: 'الخريف', winter: 'الشتاء', ramadan: 'رمضان كريم', eid: 'عيد مبارك' } as Record<string, string>
   }

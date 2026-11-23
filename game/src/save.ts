@@ -17,6 +17,7 @@ export interface SaveData {
   // Garden Album
   stats?: { merges?: number; grown?: number[]; dailyWins?: number; bestStreak?: number; familyGames?: number };
   visitors?: string[];
+  tutorialDone?: boolean;
 }
 
 export function load(): SaveData {

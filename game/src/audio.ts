@@ -89,3 +89,18 @@ export function toggleMusic(): boolean {
   if (d.music) startMusic(); else stopMusic();
   return d.music;
 }
+
+// Stop the music when the app goes to the background (phone locked, app switched), resume on return
+let resumeOnShow = false;
+if (typeof document !== 'undefined') {
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { resumeOnShow = musicTimer !== null; stopMusic(); ctx?.suspend().catch(() => {}); }
+    else { ctx?.resume().catch(() => {}); if (resumeOnShow) startMusic(); }
+  });
+}
+
+/** Short vibration on phones that support it (follows the Sound setting) */
+export function buzz(ms = 15) {
+  if (!sfxOn()) return;
+  try { navigator.vibrate?.(ms); } catch { /* not supported */ }
+}

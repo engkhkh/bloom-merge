@@ -77,6 +77,13 @@ It then opens full-screen like a normal app and works offline.
 3. Android Studio opens the project. Plug in your phone (with USB debugging on) and press ▶ Run.
 4. For a file to share or upload to Google Play: **Build → Generate Signed App Bundle / APK**.
 
+### Added in version 0.8 (launch polish)
+- **First-game tutorial:** a hand shows how to drag a seed onto another seed. It shows once, then never again.
+- **Hints:** after 7 seconds without a move, two plants that can merge gently wiggle
+- **Android back button:** goes back to the menu, or closes the app from the menu
+- **Vibration** on merges (stronger for big plants). It follows the Sound setting.
+- **Music pauses** when the phone locks or you switch apps, and resumes when you come back
+
 ## Publish on Google Play (signed release)
 Google Play needs the app signed with **your own key**. Make it once and keep it safe: if you lose it you can't update the app.
 

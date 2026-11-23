@@ -51,6 +51,18 @@ export class Board {
 
   count(level: number) { return this.cells.filter(c => c === level).length; }
 
+  /** Two cells holding the same item that can still grow, or null */
+  findPair(): [number, number] | null {
+    const seen = new Map<number, number>();
+    for (let i = 0; i < this.cells.length; i++) {
+      const c = this.cells[i];
+      if (c === null || c === MAX_LEVEL) continue;
+      if (seen.has(c)) return [seen.get(c)!, i];
+      seen.set(c, i);
+    }
+    return null;
+  }
+
   /** True when no merge is possible and the board is full. */
   isStuck(): boolean {
     if (this.emptyCells().length > 0) return false;

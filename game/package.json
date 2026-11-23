@@ -1,6 +1,6 @@
 {
   "name": "bloom-merge",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,9 +12,9 @@
     "desktop": "npm run build && electron .",
     "desktop:build": "npm run build && electron-builder --win --x64"
   },
-  "dependencies": {},
   "devDependencies": {
     "@capacitor/android": "^8.6.2",
+    "@capacitor/app": "^8.1.2",
     "@capacitor/cli": "^8.6.2",
     "@capacitor/core": "^8.6.2",
     "@capacitor/ios": "^8.6.2",

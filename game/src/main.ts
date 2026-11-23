@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { Capacitor } from '@capacitor/core';
+import { App } from '@capacitor/app';
 // Game font bundled with the app (no internet needed)
 import '@fontsource/baloo-bhaijaan-2/arabic-500.css';
 import '@fontsource/baloo-bhaijaan-2/latin-500.css';
@@ -10,7 +12,7 @@ import { AlbumScene } from './scenes/AlbumScene';
 import { EditorScene } from './scenes/EditorScene';
 
 function startGame() {
-new Phaser.Game({
+const game = new Phaser.Game({
   type: Phaser.AUTO,
   parent: 'game',
   backgroundColor: '#7cc46a',
@@ -22,6 +24,17 @@ new Phaser.Game({
   },
   scene: [MenuScene, GameScene, AlbumScene, EditorScene]
 });
+setupBackButton(game);
+}
+
+// Android back button: go back to the menu, or close the app from the menu
+function setupBackButton(game: Phaser.Game) {
+  if (!Capacitor.isNativePlatform()) return;
+  App.addListener('backButton', () => {
+    const active = game.scene.getScenes(true)[0];
+    if (!active || active.scene.key === 'Menu') App.exitApp();
+    else active.scene.start('Menu');
+  });
 }
 
 // Wait (at most 2.5 s) for the game font so text is drawn with it; works offline too

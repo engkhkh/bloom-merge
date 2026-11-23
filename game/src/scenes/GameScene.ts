@@ -3,7 +3,7 @@ import { Board, ITEMS } from '../objects/MergeLogic';
 import { LEVELS, Level } from '../levels';
 import { load, save } from '../save';
 import { drawBackground, drawBoardBed, drawCell, makeBadge, button, ts, FONT } from '../art';
-import { Sfx } from '../audio';
+import { Sfx, buzz } from '../audio';
 import { t, isRTL, lang } from '../i18n';
 import { dailyLevel, dailySeed, seededRandom, recordDaily, dailyStatus, dailyAlbum } from '../daily';
 import { recordMerge, updateStats, Visitor } from '../album';
@@ -38,6 +38,9 @@ export class GameScene extends Phaser.Scene {
   private pScores: number[] = [];
   private toastQueue: Visitor[] = [];
   private toasting = false;
+  private lastAction = 0;
+  private hintTween?: Phaser.Tweens.Tween;
+  private tutorial?: Phaser.GameObjects.GameObject[];
 
   constructor() { super('Game'); }
 
@@ -96,6 +99,8 @@ export class GameScene extends Phaser.Scene {
 
     this.input.on('dragstart', (_p: Phaser.Input.Pointer, obj: Tile) => {
       if (this.finished) return;
+      this.stopHint();
+      this.lastAction = this.time.now;
       obj.setDepth(10).setScale(1.15);
       Sfx.pick();
     });
@@ -107,6 +112,52 @@ export class GameScene extends Phaser.Scene {
     });
 
     this.updateHud();
+
+    // Gentle hint: after 7 s without a move, wiggle two plants that can merge
+    this.lastAction = this.time.now;
+    this.time.addEvent({ delay: 1000, loop: true, callback: () => this.maybeHint() });
+    if (this.level.id === 1 && !this.family && !load().tutorialDone) this.time.delayedCall(600, () => this.showTutorial());
+  }
+
+  private maybeHint() {
+    if (this.finished || this.hintTween || this.time.now - this.lastAction < 7000) return;
+    const pair = this.board.findPair();
+    if (!pair) return;
+    const targets = pair.map(i => this.tiles[i]).filter(Boolean) as Tile[];
+    this.hintTween = this.tweens.add({ targets, scale: 1.12, duration: 260, yoyo: true, repeat: 3, ease: 'Sine.InOut',
+      onComplete: () => { targets.forEach(t => t.active && t.setScale(1)); this.hintTween = undefined; this.lastAction = this.time.now - 3000; } });
+  }
+
+  private stopHint() {
+    if (!this.hintTween) return;
+    const targets = this.hintTween.targets as Tile[];
+    this.hintTween.stop();
+    targets.forEach(t => t.active && t.setScale(1));
+    this.hintTween = undefined;
+  }
+
+  /** First game ever: a hand shows how to drag one seed onto another */
+  private showTutorial() {
+    if (this.finished) return;
+    const pair = this.board.findPair();
+    if (!pair) return;
+    const a = this.cellPos(pair[0]);
+    const b = this.cellPos(pair[1]);
+    const w = this.scale.width;
+    const hand = this.add.text(a.x + 18, a.y + 22, '👆', { fontSize: '54px' }).setOrigin(0.3, 0.1).setDepth(25);
+    const bubble = this.add.text(w / 2, 238, t().tutorial, ts(22, '#ffffff', {
+      fontStyle: 'bold', backgroundColor: '#e0762b', padding: { x: 16, y: 8 }
+    })).setOrigin(0.5).setDepth(25);
+    this.tweens.add({ targets: hand, x: b.x + 18, y: b.y + 22, duration: 1100, delay: 300, hold: 400, repeat: -1, repeatDelay: 300, ease: 'Sine.InOut' });
+    this.tweens.add({ targets: bubble, scale: 1.05, duration: 600, yoyo: true, repeat: -1 });
+    this.tutorial = [hand, bubble];
+  }
+
+  private endTutorial() {
+    if (!this.tutorial) return;
+    this.tutorial.forEach(o => o.destroy());
+    this.tutorial = undefined;
+    const d = load(); d.tutorialDone = true; save(d);
   }
 
   private cellPos(i: number) {
@@ -152,6 +203,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private handleDrop(obj: Tile, x: number, y: number) {
+    this.lastAction = this.time.now;
     const from = obj.getData('cell') as number;
     const to = this.cellAt(x, y);
     const result = this.finished || to < 0 ? 'invalid' : this.board.move(from, to);
@@ -174,6 +226,8 @@ export class GameScene extends Phaser.Scene {
       this.score += pts;
       if (this.family) this.pScores[this.turn % this.family] += pts;
       Sfx.merge(lvl);
+      buzz(lvl >= 4 ? 40 : 15);
+      this.endTutorial();
       this.toast(recordMerge(lvl));
       this.burst(to, lvl);
       this.floatText(to, `+${pts}`);
