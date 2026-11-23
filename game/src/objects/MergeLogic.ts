@@ -9,6 +9,8 @@ export class Board {
   cells: Cell[];
   /** Cells covered by rocks: nothing can be placed or moved there */
   blocked = new Set<number>();
+  /** Cells whose plant is frozen in ice: can't be moved or merged until thawed */
+  frozen = new Set<number>();
   constructor(public size: number, private rng: () => number = Math.random) {
     this.cells = new Array(size * size).fill(null);
   }
@@ -34,7 +36,7 @@ export class Board {
    * Empty cell => simple move.
    */
   move(from: number, to: number): 'merge' | 'move' | 'invalid' {
-    if (from === to || this.blocked.has(to) || this.blocked.has(from)) return 'invalid';
+    if (from === to || this.blocked.has(to) || this.blocked.has(from) || this.frozen.has(from) || this.frozen.has(to)) return 'invalid';
     const a = this.cells[from];
     const b = this.cells[to];
     if (a === null) return 'invalid';
@@ -58,7 +60,7 @@ export class Board {
     const seen = new Map<number, number>();
     for (let i = 0; i < this.cells.length; i++) {
       const c = this.cells[i];
-      if (c === null || c === MAX_LEVEL) continue;
+      if (c === null || c === MAX_LEVEL || this.frozen.has(i)) continue;
       if (seen.has(c)) return [seen.get(c)!, i];
       seen.set(c, i);
     }
@@ -68,12 +70,20 @@ export class Board {
   /** True when no merge is possible and the board is full. */
   isStuck(): boolean {
     if (this.emptyCells().length > 0) return false;
-    const seen = new Set<number>();
-    for (const c of this.cells) {
-      if (c === null || c === MAX_LEVEL) continue;
-      if (seen.has(c)) return false;
-      seen.add(c);
-    }
-    return true;
+    return this.findPair() === null;
   }
+
+  /** Thaw frozen plants next to (up/down/left/right of) a cell. Returns the thawed cells. */
+  thawAround(i: number): number[] {
+    const c = i % this.size, r = Math.floor(i / this.size);
+    const out: number[] = [];
+    for (const [dc, dr] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+      const nc = c + dc, nr = r + dr;
+      if (nc < 0 || nr < 0 || nc >= this.size || nr >= this.size) continue;
+      const n = this.index(nc, nr);
+      if (this.frozen.delete(n)) out.push(n);
+    }
+    return out;
+  }
+
 }

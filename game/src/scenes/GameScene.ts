@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { Board, ITEMS } from '../objects/MergeLogic';
 import { LEVELS, Level } from '../levels';
 import { load, save } from '../save';
-import { drawBackground, drawBoardBed, drawCell, drawRock, makeBadge, button, ts, FONT } from '../art';
+import { drawBackground, drawBoardBed, drawCell, drawRock, drawIce, makeBadge, button, ts, FONT } from '../art';
 import { Sfx, buzz } from '../audio';
 import { t, isRTL, lang } from '../i18n';
 import { dailyLevel, dailySeed, seededRandom, recordDaily, dailyStatus, dailyAlbum } from '../daily';
@@ -95,8 +95,11 @@ export class GameScene extends Phaser.Scene {
     // Rocks block cells (World 2 levels)
     this.board.blocked = new Set(this.level.rocks ?? []);
     this.board.blocked.forEach(i => { const { x, y } = this.cellPos(i); drawRock(this, x, y, CELL); });
+    // Frozen plants (World 3 levels)
+    for (const [cell, lvl] of this.level.ice ?? []) { this.board.cells[cell] = lvl; this.board.frozen.add(cell); }
 
     this.tiles = new Array(SIZE * SIZE).fill(null);
+    this.board.frozen.forEach(i => this.makeTile(i));
     for (let i = 0; i < this.level.startSeeds; i++) this.spawnTile();
 
     this.add.text(w / 2, 835, this.family ? s.familyHint : s.hint, ts(19, '#ffffff', { stroke: '#2f5d2a', strokeThickness: 4 })).setOrigin(0.5);
@@ -121,8 +124,8 @@ export class GameScene extends Phaser.Scene {
     this.lastAction = this.time.now;
     this.time.addEvent({ delay: 1000, loop: true, callback: () => this.maybeHint() });
     if (this.level.id === 1 && !this.family && !load().tutorialDone) this.time.delayedCall(600, () => this.showTutorial());
-    if (this.level.id === 11) {
-      const tip = this.add.text(this.scale.width / 2, 238, t().rockTip, ts(21, '#ffffff', {
+    if (this.level.id === 11 || this.level.id === 21) {
+      const tip = this.add.text(this.scale.width / 2, 238, this.level.id === 21 ? t().iceTip : t().rockTip, ts(21, '#ffffff', {
         fontStyle: 'bold', backgroundColor: '#6b737b', padding: { x: 16, y: 8 }
       })).setOrigin(0.5).setDepth(25);
       this.tweens.add({ targets: tip, alpha: 0, delay: 4000, duration: 600, onComplete: () => tip.destroy() });
@@ -196,11 +199,16 @@ export class GameScene extends Phaser.Scene {
     c.add(this.add.text(0, -2, ITEMS[level], { fontSize: '52px' }).setOrigin(0.5));
     c.setSize(CELL, CELL);
     c.setData('cell', i);
-    c.setInteractive({ draggable: true, useHandCursor: true });
-    this.input.setDraggable(c);
     this.tiles[i] = c;
     c.setScale(0);
     this.tweens.add({ targets: c, scale: 1, duration: 220, ease: 'Back.Out' });
+    if (this.board.frozen.has(i)) {
+      c.add(drawIce(this, CELL));
+      c.setData('ice', true);
+      return; // frozen: no dragging, no sway
+    }
+    c.setInteractive({ draggable: true, useHandCursor: true });
+    this.input.setDraggable(c);
     // Gentle idle sway for grown plants
     if (level >= 2) {
       this.tweens.add({ targets: c, angle: { from: -3, to: 3 }, duration: 1600 + level * 100, yoyo: true, repeat: -1, ease: 'Sine.InOut', delay: Math.random() * 800 });
@@ -241,6 +249,7 @@ export class GameScene extends Phaser.Scene {
       this.toast(recordMerge(lvl));
       this.burst(to, lvl);
       this.floatText(to, `+${pts}`);
+      this.board.thawAround(to).forEach(n => this.thaw(n));
     } else {
       Sfx.drop();
     }
@@ -411,5 +420,18 @@ export class GameScene extends Phaser.Scene {
       const b2 = button(this, w / 2, h / 2 + 165, s.menuBtn, () => this.scene.start('Menu'), 280);
       b2.container.setDepth(22);
     });
+  }
+
+  /** Crack the ice on a plant: shards fly off and it becomes playable */
+  private thaw(i: number) {
+    const { x, y } = this.cellPos(i);
+    for (let k = 0; k < 8; k++) {
+      const shard = this.add.rectangle(x, y, 10, 6, 0xdff4ff, 0.95).setDepth(15).setAngle(Phaser.Math.Between(0, 180));
+      const a = (Math.PI * 2 * k) / 8;
+      this.tweens.add({ targets: shard, x: x + Math.cos(a) * 70, y: y + Math.sin(a) * 70 + 20, alpha: 0, angle: '+=180',
+        duration: 500, ease: 'Cubic.Out', onComplete: () => shard.destroy() });
+    }
+    Sfx.crack();
+    this.time.delayedCall(120, () => this.makeTile(i));
   }
 }

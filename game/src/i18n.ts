@@ -55,7 +55,8 @@ const STR = {
     customTitle: 'Custom puzzle',
     tutorial: 'Drag the seed onto the other seed!',
     world: (n: number, name: string) => `World ${n}: ${name}`,
-    worldNames: ['Sunny Meadow', 'Rocky Garden'],
+    worldNames: ['Sunny Meadow', 'Rocky Garden', 'Frozen Pond'],
+    iceTip: 'Frozen plants thaw when you merge right next to them!',
     rockTip: 'Rocks can\'t be moved. Plan around them!',
     familyHint: 'Take turns: one move each. Merges score points!',
     seasons: { spring: 'Spring', summer: 'Summer', autumn: 'Autumn', winter: 'Winter', ramadan: 'Ramadan Kareem', eid: 'Eid Mubarak' } as Record<string, string>
@@ -111,7 +112,8 @@ const STR = {
     customTitle: 'لغز مخصص',
     tutorial: 'اسحب البذرة إلى البذرة الأخرى!',
     world: (n: number, name: string) => `العالم ${n}: ${name}`,
-    worldNames: ['المرج المشمس', 'الحديقة الصخرية'],
+    worldNames: ['المرج المشمس', 'الحديقة الصخرية', 'البركة المتجمدة'],
+    iceTip: 'النباتات المتجمدة تذوب عندما تدمج بجانبها مباشرة!',
     rockTip: 'الصخور لا تتحرك. خطط حولها!',
     familyHint: 'بالدور: حركة لكل لاعب. الدمج يعطي نقاطًا!',
     seasons: { spring: 'الربيع', summer: 'الصيف', autumn: 'الخريف', winter: 'الشتاء', ramadan: 'رمضان كريم', eid: 'عيد مبارك' } as Record<string, string>

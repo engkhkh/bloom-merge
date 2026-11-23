@@ -5,6 +5,7 @@ export interface Level {
   moves: number;       // move limit (ignored in Kid Mode)
   startSeeds: number;
   rocks?: number[];    // blocked cells (0–24, row by row)
+  ice?: [number, number][]; // frozen plants: [cell, plant level]
 }
 
 export const LEVELS: Level[] = [
@@ -28,7 +29,18 @@ export const LEVELS: Level[] = [
   { id: 17, goalLevel: 4, goalCount: 1, moves: 28, startSeeds: 8, rocks: [0, 1, 3, 4, 20, 21, 23, 24] },
   { id: 18, goalLevel: 5, goalCount: 1, moves: 56, startSeeds: 10, rocks: [7, 11, 12, 13, 17] },
   { id: 19, goalLevel: 4, goalCount: 3, moves: 80, startSeeds: 10, rocks: [5, 9, 12, 15, 19] },
-  { id: 20, goalLevel: 5, goalCount: 2, moves: 110, startSeeds: 10, rocks: [0, 4, 6, 8, 16, 18, 20, 24] }
+  { id: 20, goalLevel: 5, goalCount: 2, moves: 110, startSeeds: 10, rocks: [0, 4, 6, 8, 16, 18, 20, 24] },
+  // World 3: Frozen Pond – frozen plants thaw when you merge right next to them
+  { id: 21, goalLevel: 2, goalCount: 2, moves: 14, startSeeds: 6, ice: [[12, 1]] },
+  { id: 22, goalLevel: 3, goalCount: 1, moves: 10, startSeeds: 6, ice: [[6, 2], [18, 2]] },
+  { id: 23, goalLevel: 3, goalCount: 2, moves: 24, startSeeds: 8, ice: [[0, 1], [4, 1], [20, 1], [24, 1]] },
+  { id: 24, goalLevel: 4, goalCount: 1, moves: 14, startSeeds: 8, ice: [[11, 3], [13, 2]] },
+  { id: 25, goalLevel: 3, goalCount: 3, moves: 22, startSeeds: 8, rocks: [12], ice: [[7, 2], [11, 2], [13, 2], [17, 2]] },
+  { id: 26, goalLevel: 4, goalCount: 1, moves: 18, startSeeds: 8, ice: [[2, 2], [10, 2], [14, 2], [22, 2]] },
+  { id: 27, goalLevel: 4, goalCount: 2, moves: 55, startSeeds: 8, rocks: [6, 8, 16, 18], ice: [[12, 3]] },
+  { id: 28, goalLevel: 5, goalCount: 1, moves: 28, startSeeds: 10, ice: [[0, 3], [4, 3], [20, 2], [24, 2]] },
+  { id: 29, goalLevel: 4, goalCount: 3, moves: 70, startSeeds: 10, rocks: [12], ice: [[7, 3], [11, 3], [13, 1], [17, 1]] },
+  { id: 30, goalLevel: 5, goalCount: 2, moves: 100, startSeeds: 10, rocks: [0, 4, 20, 24], ice: [[6, 3], [8, 3], [16, 2], [18, 2]] }
 ];
 
 export const LEVELS_PER_WORLD = 10;

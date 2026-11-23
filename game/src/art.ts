@@ -206,3 +206,18 @@ export function drawRock(scene: Phaser.Scene, cx: number, cy: number, s: number)
   g.fillStyle(0xc2c8ce, 1); g.fillEllipse(cx - s * 0.18, cy - s * 0.1, s * 0.16, s * 0.09);
   g.fillStyle(0x6aa84f, 1); g.fillEllipse(cx + s * 0.2, cy - s * 0.04, s * 0.14, s * 0.07); // moss
 }
+
+/** Ice block drawn over a frozen plant */
+export function drawIce(scene: Phaser.Scene, s: number) {
+  const g = scene.add.graphics();
+  const h = s / 2 - 4;
+  g.fillStyle(0xbfe9ff, 0.55); g.fillRoundedRect(-h, -h, h * 2, h * 2, 14);
+  g.lineStyle(3, 0xffffff, 0.9); g.strokeRoundedRect(-h, -h, h * 2, h * 2, 14);
+  g.lineStyle(3, 0xffffff, 0.75);
+  g.lineBetween(-h + 10, -h + 24, -h + 24, -h + 10);
+  g.lineBetween(-h + 10, -h + 38, -h + 38, -h + 10);
+  g.lineStyle(2, 0x8fd0f0, 0.8);
+  g.lineBetween(h - 30, h - 8, h - 12, h - 26); // crack
+  g.lineBetween(h - 12, h - 26, h - 20, h - 34);
+  return g;
+}

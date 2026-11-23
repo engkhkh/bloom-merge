@@ -61,11 +61,12 @@ export class MenuScene extends Phaser.Scene {
       const x = w / 2 + ((i % cols) - (cols - 1) / 2) * cell;
       const y = 250 + Math.floor(i / cols) * 102;
       const locked = lvl.id > data.unlocked;
-      const rocky = !!lvl.rocks?.length;
+      const rocky = !!lvl.rocks?.length && !lvl.ice;
+      const icy = !!lvl.ice?.length;
       const g = this.add.graphics();
       g.fillStyle(0x000000, 0.2); g.fillCircle(x, y + 5, 36);
-      g.fillStyle(locked ? 0xa7b8a2 : rocky ? 0xe3e6ea : 0xfff3c4, 1); g.fillCircle(x, y, 36);
-      g.lineStyle(5, locked ? 0x7d8f79 : rocky ? 0x7d848c : 0xe0a526, 1); g.strokeCircle(x, y, 36);
+      g.fillStyle(locked ? 0xa7b8a2 : icy ? 0xdff4ff : rocky ? 0xe3e6ea : 0xfff3c4, 1); g.fillCircle(x, y, 36);
+      g.lineStyle(5, locked ? 0x7d8f79 : icy ? 0x5fb4e0 : rocky ? 0x7d848c : 0xe0a526, 1); g.strokeCircle(x, y, 36);
       this.add.text(x, y, locked ? '🔒' : String(lvl.id), ts(locked ? 26 : 32, '#5a3b22', { fontStyle: 'bold', rtl: false })).setOrigin(0.5);
       const stars = data.stars[lvl.id] ?? 0;
       this.add.text(x, y + 46, stars ? '⭐'.repeat(stars) : '', { fontSize: '15px' }).setOrigin(0.5);

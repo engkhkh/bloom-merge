@@ -41,6 +41,10 @@ export const Sfx = {
     tone(base * 1.5, 0.06, 0.2, 'sine', 0.16);
     tone(base * 2, 0.12, 0.25, 'triangle', 0.1);
   },
+  crack() {
+    if (!sfxOn()) return;
+    [1800, 2400, 1500].forEach((f, i) => tone(f, i * 0.04, 0.08, 'square', 0.04));
+  },
   win() {
     if (!sfxOn()) return;
     [523, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.12, 0.35, 'triangle', 0.2));

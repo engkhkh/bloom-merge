@@ -84,6 +84,11 @@ It then opens full-screen like a normal app and works offline.
 - **Vibration** on merges (stronger for big plants). It follows the Sound setting.
 - **Music pauses** when the phone locks or you switch apps, and resumes when you come back
 
+### Added in version 0.10
+- **World 3: Frozen Pond.** In levels 21–30, some plants start frozen in ice. They can't be moved or merged until you merge something right next to them (up, down, left or right), which cracks the ice with a sound and flying shards. The later levels mix ice with rocks.
+- Move limits were tuned with the simulated player: all 30 levels are winnable
+- World 3 level buttons are icy blue
+
 ### Added in version 0.9
 - **World 2: Rocky Garden.** Levels 11–20 have rocks that block cells, so there's less room to work with. Use ◀ ▶ on the menu to switch worlds.
 - Every level was checked with a simulated player (300+ games each): all 20 are winnable, and in World 2 three stars need near-perfect play
