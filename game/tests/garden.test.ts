@@ -32,3 +32,17 @@ describe('My Garden', () => {
     expect(placed().length).toBe(MAX_PLACED);
   });
 });
+
+describe('Reset progress', () => {
+  it('clears progress but keeps settings', async () => {
+    const { load, save, resetProgress } = await import('../src/save');
+    save({ unlocked: 9, stars: { 1: 3 }, kidMode: true, lang: 'ar', markers: true, vibrate: false, garden: [{ l: 2, x: 1, y: 1 }], visitors: ['bee'] });
+    resetProgress();
+    const d = load();
+    expect(d.unlocked).toBe(1);
+    expect(d.stars).toEqual({});
+    expect(d.garden).toBeUndefined();
+    expect(d.visitors).toBeUndefined();
+    expect([d.lang, d.markers, d.vibrate, d.kidMode]).toEqual(['ar', true, false, true]);
+  });
+});

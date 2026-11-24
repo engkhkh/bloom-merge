@@ -2,6 +2,7 @@
 import Phaser from 'phaser';
 import { isRTL } from './i18n';
 import { season, palette, Season } from './season';
+import { motionOK, markersOn } from './settings';
 
 // One rounded font that has both Latin and Arabic letters
 export const FONT = '"Baloo Bhaijaan 2", "Segoe UI", Tahoma, Arial, sans-serif';
@@ -73,7 +74,7 @@ export function drawBackground(scene: Phaser.Scene) {
     cg.fillStyle(p.cloud, p.night ? 0.6 : 0.95);
     cg.fillCircle(0, 0, 26); cg.fillCircle(28, -10, 32); cg.fillCircle(58, 0, 24); cg.fillRoundedRect(-20, 0, 96, 22, 11);
     c.add(cg);
-    scene.tweens.add({ targets: c, x: x + 60, duration: 9000, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
+    if (motionOK()) scene.tweens.add({ targets: c, x: x + 60, duration: 9000, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
   });
 
   drawSeasonExtras(scene, sn);
@@ -103,7 +104,7 @@ function drawSeasonExtras(scene: Phaser.Scene, sn: Season) {
       lg.fillStyle(col, 1); lg.fillRoundedRect(-12, 16, 24, 36, 8);
       lg.fillStyle(0xffffff, 0.5); lg.fillRoundedRect(-6, 20, 5, 28, 3);
       l.add(lg);
-      scene.tweens.add({ targets: l, angle: { from: -6, to: 6 }, duration: 1800 + i * 200, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
+      if (motionOK()) scene.tweens.add({ targets: l, angle: { from: -6, to: 6 }, duration: 1800 + i * 200, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
     });
   }
 
@@ -117,8 +118,7 @@ function drawSeasonExtras(scene: Phaser.Scene, sn: Season) {
   };
   const f = fall[sn];
   if (!f) return;
-  const reduce = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return;
+  if (!motionOK()) return;
 
   const drop = () => {
     const x = Phaser.Math.Between(-20, w + 20);
@@ -175,6 +175,13 @@ export function makeBadge(scene: Phaser.Scene, level: number, s: number) {
   g.fillStyle(0x000000, 0.18); g.fillCircle(0, 4, s * 0.42);
   g.fillStyle(TILE_COLORS[level], 1); g.fillCircle(0, 0, s * 0.42);
   g.fillStyle(0xffffff, 0.35); g.fillCircle(-s * 0.12, -s * 0.14, s * 0.16);
+  if (markersOn()) {
+    // Colour-blind markers: one dot per level (seed = 1 dot … apple tree = 6), on a dark strip
+    const n = level + 1, gap = 9, w = n * gap + 6;
+    g.fillStyle(0x2b1d10, 0.85); g.fillRoundedRect(-w / 2, s * 0.3, w, 12, 6);
+    g.fillStyle(0xffffff, 1);
+    for (let i = 0; i < n; i++) g.fillCircle(-((n - 1) * gap) / 2 + i * gap, s * 0.3 + 6, 3);
+  }
   return g;
 }
 

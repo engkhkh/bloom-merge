@@ -5,10 +5,11 @@ let menuPage: number | null = null; // which world page the menu shows
 import { ITEMS } from '../objects/MergeLogic';
 import { load, save } from '../save';
 import { drawBackground, button, ts } from '../art';
-import { startMusic, toggleMusic, toggleSound } from '../audio';
+import { startMusic } from '../audio';
 import { t, toggleLang, isRTL } from '../i18n';
 import { unlockedIds } from '../album';
 import { season, cyclePreview, SEASON_ICON } from '../season';
+import { motionOK } from '../settings';
 import { dailyStatus } from '../daily';
 
 export class MenuScene extends Phaser.Scene {
@@ -36,7 +37,7 @@ export class MenuScene extends Phaser.Scene {
     const title = this.add.text(w / 2, 82, s.title, ts(58, '#ffffff', {
       fontStyle: 'bold', stroke: '#2f5d2a', strokeThickness: 10
     })).setOrigin(0.5);
-    this.tweens.add({ targets: title, y: 92, duration: 1400, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
+    if (motionOK()) this.tweens.add({ targets: title, y: 92, duration: 1400, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
     this.add.text(w / 2, 152, ITEMS.join(' → '), { fontSize: '26px', color: '#2f5d2a', fontStyle: 'bold', stroke: '#ffffff', strokeThickness: 4 }).setOrigin(0.5);
 
     // Level buttons: one page (world) of 10 at a time, 5 columns x 2 rows
@@ -110,12 +111,7 @@ export class MenuScene extends Phaser.Scene {
       if (kid.text.width > 140) kid.text.setScale(140 / kid.text.width);
     }, 164, 0x4e8a46);
 
-    const snd = button(this, w / 2 - 88, 786, data.sound === false ? s.soundOff : s.sound, () => {
-      snd.text.setText(toggleSound() ? s.sound : s.soundOff);
-    }, 164, 0x3f7fbf);
-    const mus = button(this, w / 2 + 88, 786, data.music === false ? s.musicOff : s.music, () => {
-      mus.text.setText(toggleMusic() ? s.music : s.musicOff);
-    }, 164, 0x3f7fbf);
+    button(this, w / 2, 786, s.settings, () => this.scene.start('Settings'), 340, 0x3f7fbf);
 
     this.add.text(w / 2, 852, s.kidHint, ts(17, '#ffffff', { stroke: '#2f5d2a', strokeThickness: 4 })).setOrigin(0.5);
   }

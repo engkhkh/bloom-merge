@@ -84,6 +84,17 @@ It then opens full-screen like a normal app and works offline.
 - **Vibration** on merges (stronger for big plants). It follows the Sound setting.
 - **Music pauses** when the phone locks or you switch apps, and resumes when you come back
 
+### Added in version 0.13 (accessibility)
+- **⚙️ Settings screen** (replaces the Sound/Music buttons on the menu), with switches for:
+  - Sound effects
+  - Music
+  - **Vibration**
+  - **Reduce motion:** no falling leaves, swaying, bouncing or screen shake. It also turns on automatically when the device asks for less motion.
+  - **Colour-blind markers:** dots under each plant show its size, from 1 dot for a seed to 6 for an apple tree (from the original plan, Week 6)
+- The language switch is also in Settings
+- **Reset progress** with a second tap to confirm. It clears levels, stars, album and garden, and keeps your settings.
+- 49 tests
+
 ### Added in version 0.12
 - **🏡 My Garden** (garden decorating from the original plan). Every tulip, sunflower, tree and apple tree you grow in the levels goes into a basket. Pick one and tap the grass to plant it, drag plants to rearrange them, or drag them back to the basket. Your Album animals wander around the garden; tap one to see its name. The layout is saved (up to 60 plants).
 - 3 more tests (48 in total)
@@ -159,3 +170,4 @@ Week 5: art and sound. Week 7: PWA and web release. Week 8: Capacitor mobile app
 - `src/season.ts` – seasons, Ramadan and Eid dates, colours
 - `src/custom.ts`, `src/scenes/EditorScene.ts` – Level Editor and share codes
 - `src/garden.ts`, `src/scenes/GardenScene.ts` – My Garden
+- `src/settings.ts`, `src/scenes/SettingsScene.ts` – Settings and accessibility

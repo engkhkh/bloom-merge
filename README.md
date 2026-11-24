@@ -16,6 +16,7 @@ One codebase runs on the **web**, **Android**, **iPhone** and **Windows/Mac**.
 - ✏️ Level Editor: make your own puzzle and share it with a short code
 - 🧸 Kid Mode: no move limit, no pressure
 - English and Arabic (right-to-left)
+- ♿ Accessibility: colour-blind markers, reduce motion, vibration and sound switches
 - Works offline, no ads, no tracking, no personal data ([privacy policy](game/public/privacy.html))
 
 ## Project layout

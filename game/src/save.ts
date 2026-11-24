@@ -19,6 +19,9 @@ export interface SaveData {
   visitors?: string[];
   tutorialDone?: boolean;
   garden?: { l: number; x: number; y: number }[];
+  vibrate?: boolean;
+  reduceMotion?: boolean;
+  markers?: boolean;
 }
 
 export function load(): SaveData {
@@ -31,4 +34,11 @@ export function load(): SaveData {
 
 export function save(data: SaveData) {
   try { localStorage.setItem(KEY, JSON.stringify(data)); } catch { /* ignore */ }
+}
+
+/** Start over: keeps settings (language, sound, music, accessibility), clears progress */
+export function resetProgress() {
+  const d = load();
+  save({ unlocked: 1, stars: {}, kidMode: d.kidMode, sound: d.sound, music: d.music, lang: d.lang,
+    vibrate: d.vibrate, reduceMotion: d.reduceMotion, markers: d.markers });
 }

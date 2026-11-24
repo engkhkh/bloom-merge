@@ -4,6 +4,7 @@ import { LEVELS, Level } from '../levels';
 import { load, save } from '../save';
 import { drawBackground, drawBoardBed, drawCell, drawRock, drawIce, makeBadge, button, ts, FONT } from '../art';
 import { Sfx, buzz } from '../audio';
+import { motionOK } from '../settings';
 import { t, isRTL, lang } from '../i18n';
 import { dailyLevel, dailySeed, seededRandom, recordDaily, dailyStatus, dailyAlbum } from '../daily';
 import { recordMerge, updateStats, Visitor } from '../album';
@@ -225,7 +226,7 @@ export class GameScene extends Phaser.Scene {
     c.setInteractive({ draggable: true, useHandCursor: true });
     this.input.setDraggable(c);
     // Gentle idle sway for grown plants
-    if (level >= 2) {
+    if (level >= 2 && motionOK()) {
       this.tweens.add({ targets: c, angle: { from: -3, to: 3 }, duration: 1600 + level * 100, yoyo: true, repeat: -1, ease: 'Sine.InOut', delay: Math.random() * 800 });
     }
   }
@@ -291,7 +292,7 @@ export class GameScene extends Phaser.Scene {
         alpha: 0, scale: 1.4, duration: 550, ease: 'Cubic.Out', onComplete: () => s.destroy()
       });
     }
-    if (lvl >= 4) this.cameras.main.shake(150, 0.004);
+    if (lvl >= 4 && motionOK()) this.cameras.main.shake(150, 0.004);
   }
 
   private floatText(i: number, msg: string) {

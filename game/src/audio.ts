@@ -105,6 +105,6 @@ if (typeof document !== 'undefined') {
 
 /** Short vibration on phones that support it (follows the Sound setting) */
 export function buzz(ms = 15) {
-  if (!sfxOn()) return;
+  if (load().vibrate === false) return;
   try { navigator.vibrate?.(ms); } catch { /* not supported */ }
 }

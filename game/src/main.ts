@@ -11,6 +11,7 @@ import { GameScene } from './scenes/GameScene';
 import { AlbumScene } from './scenes/AlbumScene';
 import { EditorScene } from './scenes/EditorScene';
 import { GardenScene } from './scenes/GardenScene';
+import { SettingsScene } from './scenes/SettingsScene';
 
 function startGame() {
 const game = new Phaser.Game({
@@ -23,7 +24,7 @@ const game = new Phaser.Game({
     width: 540,
     height: 900
   },
-  scene: [MenuScene, GameScene, AlbumScene, EditorScene, GardenScene]
+  scene: [MenuScene, GameScene, AlbumScene, EditorScene, GardenScene, SettingsScene]
 });
 setupBackButton(game);
 }
