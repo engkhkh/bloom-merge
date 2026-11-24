@@ -57,6 +57,10 @@ const STR = {
     world: (n: number, name: string) => `World ${n}: ${name}`,
     worldNames: ['Sunny Meadow', 'Rocky Garden', 'Frozen Pond'],
     iceTip: 'Frozen plants thaw when you merge right next to them!',
+    garden: '🏡 Garden',
+    gardenTitle: 'My Garden',
+    gardenHint: 'Pick a plant from the basket, then tap the grass to plant it. Drag plants to move them, or back to the basket.',
+    gardenEmpty: 'Grow tulips, sunflowers and trees in the levels, then come back to decorate!',
     rockTip: 'Rocks can\'t be moved. Plan around them!',
     familyHint: 'Take turns: one move each. Merges score points!',
     seasons: { spring: 'Spring', summer: 'Summer', autumn: 'Autumn', winter: 'Winter', ramadan: 'Ramadan Kareem', eid: 'Eid Mubarak' } as Record<string, string>
@@ -114,6 +118,10 @@ const STR = {
     world: (n: number, name: string) => `العالم ${n}: ${name}`,
     worldNames: ['المرج المشمس', 'الحديقة الصخرية', 'البركة المتجمدة'],
     iceTip: 'النباتات المتجمدة تذوب عندما تدمج بجانبها مباشرة!',
+    garden: '🏡 حديقتي',
+    gardenTitle: 'حديقتي',
+    gardenHint: 'اختر نبتة من السلة ثم المس العشب لزراعتها. اسحب النباتات لتحريكها أو أعدها إلى السلة.',
+    gardenEmpty: 'ازرع التوليب وعباد الشمس والأشجار في المراحل، ثم عد لتزيين حديقتك!',
     rockTip: 'الصخور لا تتحرك. خطط حولها!',
     familyHint: 'بالدور: حركة لكل لاعب. الدمج يعطي نقاطًا!',
     seasons: { spring: 'الربيع', summer: 'الصيف', autumn: 'الخريف', winter: 'الشتاء', ramadan: 'رمضان كريم', eid: 'عيد مبارك' } as Record<string, string>

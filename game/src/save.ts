@@ -18,6 +18,7 @@ export interface SaveData {
   stats?: { merges?: number; grown?: number[]; dailyWins?: number; bestStreak?: number; familyGames?: number };
   visitors?: string[];
   tutorialDone?: boolean;
+  garden?: { l: number; x: number; y: number }[];
 }
 
 export function load(): SaveData {

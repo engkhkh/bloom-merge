@@ -11,6 +11,7 @@ One codebase runs on the **web**, **Android**, **iPhone** and **Windows/Mac**.
 - 📅 Daily Challenge: the same puzzle for everyone each day, with best score and 🔥 streak
 - 👪 Family Garden: 2–4 players take turns on one device
 - 📖 Garden Album: 12 animal visitors to collect
+- 🏡 My Garden: decorate your own garden with the plants you grew, while your animals wander around
 - 🌸 ☀️ 🍂 ❄️ 🌙 🎉 Seasonal gardens: spring, summer, autumn, winter, Ramadan and Eid, chosen by date
 - ✏️ Level Editor: make your own puzzle and share it with a short code
 - 🧸 Kid Mode: no move limit, no pressure

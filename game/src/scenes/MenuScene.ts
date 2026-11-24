@@ -93,13 +93,14 @@ export class MenuScene extends Phaser.Scene {
       this.add.text(w / 2, 583, s.streak(ds.streak), ts(19, '#ffffff', { stroke: '#5a3b22', strokeThickness: 4 })).setOrigin(0.5);
     }
 
-    // Family Garden + Album
+    // Family Garden + Album + My Garden (three across)
     const fx = isRTL() ? 1 : -1;
-    button(this, w / 2 + fx * 88, 638, s.family, () => this.chooseFamily(), 164, 0xd6457a);
+    button(this, w / 2 + fx * 116, 638, s.family, () => this.chooseFamily(), 108, 0xd6457a);
     const found = unlockedIds().length;
-    button(this, w / 2 - fx * 88, 638, s.album, () => this.scene.start('Album'), 164, 0xc98a1c);
-    this.add.text(w / 2 - fx * 88 + 70, 614, String(found), ts(16, '#ffffff', { fontStyle: 'bold', backgroundColor: '#d63b3b', padding: { x: 7, y: 1 } }))
+    button(this, w / 2, 638, s.album, () => this.scene.start('Album'), 108, 0xc98a1c);
+    this.add.text(w / 2 + 46, 614, String(found), ts(16, '#ffffff', { fontStyle: 'bold', backgroundColor: '#d63b3b', padding: { x: 7, y: 1 } }))
       .setOrigin(0.5).setVisible(found > 0);
+    button(this, w / 2 - fx * 116, 638, s.garden, () => this.scene.start('Garden'), 108, 0x2f9a6a);
 
     // Settings
     button(this, w / 2 - fx * 88, 712, s.editor, () => this.scene.start('Editor'), 164, 0x8e5bd6);

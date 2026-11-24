@@ -84,6 +84,10 @@ It then opens full-screen like a normal app and works offline.
 - **Vibration** on merges (stronger for big plants). It follows the Sound setting.
 - **Music pauses** when the phone locks or you switch apps, and resumes when you come back
 
+### Added in version 0.12
+- **🏡 My Garden** (garden decorating from the original plan). Every tulip, sunflower, tree and apple tree you grow in the levels goes into a basket. Pick one and tap the grass to plant it, drag plants to rearrange them, or drag them back to the basket. Your Album animals wander around the garden; tap one to see its name. The layout is saved (up to 60 plants).
+- 3 more tests (48 in total)
+
 ### Added in version 0.11
 - **↶ Undo:** take back a move, 3 times per level (unlimited in Kid Mode). It's not available in the Daily Challenge or Family Garden, to keep them fair.
 - **Automated tests** (`npm test`, 45 tests): board rules, rocks, ice, Level Editor codes, Daily seeds, seasons and Ramadan/Eid dates, Arabic/English translation completeness, and a simulated player that must win every level at least 90% of the time. GitHub runs them on every push.
@@ -154,3 +158,4 @@ Week 5: art and sound. Week 7: PWA and web release. Week 8: Capacitor mobile app
 - `src/scenes/AlbumScene.ts` – the Album screen
 - `src/season.ts` – seasons, Ramadan and Eid dates, colours
 - `src/custom.ts`, `src/scenes/EditorScene.ts` – Level Editor and share codes
+- `src/garden.ts`, `src/scenes/GardenScene.ts` – My Garden
