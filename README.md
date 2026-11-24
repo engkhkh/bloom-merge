@@ -30,6 +30,7 @@ One codebase runs on the **web**, **Android**, **iPhone** and **Windows/Mac**.
 cd game
 npm install
 npm run dev          # web, at http://localhost:5173
+npm test             # automated tests (rules + every level winnable)
 npm run desktop      # desktop window
 npm run android      # opens Android Studio
 ```

@@ -18,6 +18,8 @@ const GAP = 8;
 
 type Tile = Phaser.GameObjects.Container;
 
+interface Snapshot { cells: (number | null)[]; frozen: number[]; score: number; movesLeft: number; }
+
 export class GameScene extends Phaser.Scene {
   private board!: Board;
   private level!: Level;
@@ -28,6 +30,9 @@ export class GameScene extends Phaser.Scene {
   private originX = 0;
   private originY = 0;
   private hud!: Phaser.GameObjects.Text;
+  private history: Snapshot[] = [];
+  private undosLeft = 0;
+  private undoBtn?: Phaser.GameObjects.Text;
   private goalText!: Phaser.GameObjects.Text;
   private finished = false;
   private daily = false;
@@ -84,6 +89,16 @@ export class GameScene extends Phaser.Scene {
     })).setOrigin(0.5);
     this.goalText = this.add.text(w / 2, 112, '', ts(28, '#2f5d2a', { fontStyle: 'bold' })).setOrigin(0.5);
     this.hud = this.add.text(w / 2, 172, '', ts(24, '#5a3b22')).setOrigin(0.5);
+
+    // Undo: 3 per level (unlimited in Kid Mode). Not in the Daily Challenge or Family Garden, to keep them fair.
+    this.history = [];
+    this.undosLeft = this.kidMode ? Infinity : 3;
+    if (!this.daily && !this.family) {
+      this.undoBtn = this.add.text(isRTL() ? 46 : w - 46, 172, '', ts(22, '#ffffff', {
+        fontStyle: 'bold', backgroundColor: '#3f7fbf', padding: { x: 12, y: 4 }, rtl: false
+      })).setOrigin(0.5).setInteractive({ useHandCursor: true });
+      this.undoBtn.on('pointerup', () => this.undo());
+    } else this.undoBtn = undefined;
 
     // Garden bed
     drawBoardBed(this, this.originX, this.originY, boardPx);
@@ -224,7 +239,9 @@ export class GameScene extends Phaser.Scene {
     this.lastAction = this.time.now;
     const from = obj.getData('cell') as number;
     const to = this.cellAt(x, y);
+    const before = this.snapshot();
     const result = this.finished || to < 0 ? 'invalid' : this.board.move(from, to);
+    if (result !== 'invalid') { this.history.push(before); if (this.history.length > 10) this.history.shift(); }
 
     if (result === 'invalid') {
       const p = this.cellPos(from);
@@ -296,6 +313,10 @@ export class GameScene extends Phaser.Scene {
     }
     const have = Math.min(this.board.count(this.level.goalLevel), this.level.goalCount);
     this.goalText.setText(s.goal(ITEMS[this.level.goalLevel], s.items[this.level.goalLevel], have, this.level.goalCount));
+    if (this.undoBtn) {
+      const n = this.undosLeft === Infinity ? '∞' : String(this.undosLeft);
+      this.undoBtn.setText(`↶ ${n}`).setAlpha(this.history.length && this.undosLeft > 0 ? 1 : 0.45);
+    }
     const moves = s.moves(this.kidMode ? '∞' : String(this.movesLeft));
     this.hud.setText(`${moves}      ${s.score(this.score)}`);
     if (!this.kidMode && this.movesLeft <= 5) this.hud.setColor('#c0392b');
@@ -433,5 +454,25 @@ export class GameScene extends Phaser.Scene {
     }
     Sfx.crack();
     this.time.delayedCall(120, () => this.makeTile(i));
+  }
+
+  private snapshot(): Snapshot {
+    return { cells: [...this.board.cells], frozen: [...this.board.frozen], score: this.score, movesLeft: this.movesLeft };
+  }
+
+  /** Take back the last move: restores the board, score and moves */
+  private undo() {
+    if (this.finished || this.undosLeft <= 0 || this.history.length === 0) { Sfx.bad(); return; }
+    const snap = this.history.pop()!;
+    this.undosLeft--;
+    this.stopHint();
+    this.board.cells = [...snap.cells];
+    this.board.frozen = new Set(snap.frozen);
+    this.score = snap.score;
+    this.movesLeft = snap.movesLeft;
+    for (let i = 0; i < this.tiles.length; i++) this.makeTile(i);
+    Sfx.drop();
+    this.lastAction = this.time.now;
+    this.updateHud();
   }
 }

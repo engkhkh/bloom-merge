@@ -33,6 +33,8 @@ jobs:
         with: { node-version: 22, cache: npm, cache-dependency-path: game/package-lock.json }
       - run: npm ci
         env: { ELECTRON_SKIP_BINARY_DOWNLOAD: '1' }
+      - name: Tests (game rules, codes, dates, translations, every level winnable)
+        run: npm test
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with: { path: game/dist }

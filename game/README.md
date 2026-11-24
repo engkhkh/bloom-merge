@@ -84,6 +84,10 @@ It then opens full-screen like a normal app and works offline.
 - **Vibration** on merges (stronger for big plants). It follows the Sound setting.
 - **Music pauses** when the phone locks or you switch apps, and resumes when you come back
 
+### Added in version 0.11
+- **↶ Undo:** take back a move, 3 times per level (unlimited in Kid Mode). It's not available in the Daily Challenge or Family Garden, to keep them fair.
+- **Automated tests** (`npm test`, 45 tests): board rules, rocks, ice, Level Editor codes, Daily seeds, seasons and Ramadan/Eid dates, Arabic/English translation completeness, and a simulated player that must win every level at least 90% of the time. GitHub runs them on every push.
+
 ### Added in version 0.10
 - **World 3: Frozen Pond.** In levels 21–30, some plants start frozen in ice. They can't be moved or merged until you merge something right next to them (up, down, left or right), which cracks the ice with a sound and flying shards. The later levels mix ice with rocks.
 - Move limits were tuned with the simulated player: all 30 levels are winnable
