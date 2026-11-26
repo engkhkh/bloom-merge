@@ -22,6 +22,8 @@ export interface SaveData {
   vibrate?: boolean;
   reduceMotion?: boolean;
   markers?: boolean;
+  drops?: number;                       // Magic Water boosters
+  quests?: { date: string; progress: Record<string, number>; claimed: string[] };
 }
 
 export function load(): SaveData {
@@ -29,7 +31,7 @@ export function load(): SaveData {
     const raw = localStorage.getItem(KEY);
     if (raw) return JSON.parse(raw);
   } catch { /* storage unavailable */ }
-  return { unlocked: 1, stars: {}, kidMode: false, sound: true, music: true };
+  return { unlocked: 1, stars: {}, kidMode: false, sound: true, music: true, drops: 2 };
 }
 
 export function save(data: SaveData) {
@@ -40,5 +42,5 @@ export function save(data: SaveData) {
 export function resetProgress() {
   const d = load();
   save({ unlocked: 1, stars: {}, kidMode: d.kidMode, sound: d.sound, music: d.music, lang: d.lang,
-    vibrate: d.vibrate, reduceMotion: d.reduceMotion, markers: d.markers });
+    vibrate: d.vibrate, reduceMotion: d.reduceMotion, markers: d.markers, drops: 2 });
 }

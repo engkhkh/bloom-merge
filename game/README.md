@@ -84,6 +84,13 @@ It then opens full-screen like a normal app and works offline.
 - **Vibration** on merges (stronger for big plants). It follows the Sound setting.
 - **Music pauses** when the phone locks or you switch apps, and resumes when you come back
 
+### Added in version 0.14 (ideas from similar games)
+The game was compared with Triple Town, Merge Dragons, Merge Magic, Merge Gardens and Merge Mansion; see `marketing/competitor-comparison.md`.
+- **Combos** (from the Merge Dragons/Magic merge-5 bonus): 3 merges in a row score double, and every 5 merges in a row earn +1 💧
+- **💧 Magic Water** (like Triple Town's crystal wild card): in a level, tap 💧 then tap any plant to grow it one size without using a move. Everyone starts with 2. It's not available in the Daily Challenge or Family Garden.
+- **📜 Daily Quests** (like the order boards in Merge Mansion/Gardens): 3 quests a day, the same for everyone, such as "Merge 20 times" or "Plant 3 things in My Garden". Rewards are 💧 drops. There are no energy timers or purchases, on purpose.
+- 53 tests
+
 ### Added in version 0.13 (accessibility)
 - **⚙️ Settings screen** (replaces the Sound/Music buttons on the menu), with switches for:
   - Sound effects
@@ -171,3 +178,4 @@ Week 5: art and sound. Week 7: PWA and web release. Week 8: Capacitor mobile app
 - `src/custom.ts`, `src/scenes/EditorScene.ts` – Level Editor and share codes
 - `src/garden.ts`, `src/scenes/GardenScene.ts` – My Garden
 - `src/settings.ts`, `src/scenes/SettingsScene.ts` – Settings and accessibility
+- `src/quests.ts`, `src/scenes/QuestsScene.ts` – Daily Quests and Magic Water

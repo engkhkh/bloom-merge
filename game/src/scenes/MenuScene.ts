@@ -10,6 +10,7 @@ import { t, toggleLang, isRTL } from '../i18n';
 import { unlockedIds } from '../album';
 import { season, cyclePreview, SEASON_ICON } from '../season';
 import { motionOK } from '../settings';
+import { unclaimedCount } from '../quests';
 import { dailyStatus } from '../daily';
 
 export class MenuScene extends Phaser.Scene {
@@ -84,12 +85,17 @@ export class MenuScene extends Phaser.Scene {
       this.scene.start('Game', { levelId: next });
     }, 340, 0xe0762b);
 
-    // Daily Challenge
+    // Daily Challenge + Daily Quests
     const ds = dailyStatus();
-    button(this, w / 2, 542, ds.done ? s.dailyDone(ds.best) : s.daily, () => {
+    const qx = isRTL() ? -1 : 1;
+    button(this, w / 2 - qx * 58, 542, ds.done ? s.dailyDone(ds.best) : s.daily, () => {
       startMusic();
       this.scene.start('Game', { levelId: 0, daily: true });
-    }, 340, 0x8e5bd6);
+    }, 224, 0x8e5bd6);
+    button(this, w / 2 + qx * 116, 542, s.quests, () => this.scene.start('Quests'), 108, 0x2f8fd6);
+    const todo = unclaimedCount();
+    if (todo > 0) this.add.text(w / 2 + qx * 116 + 46, 518, String(todo), ts(16, '#ffffff', {
+      fontStyle: 'bold', backgroundColor: '#d63b3b', padding: { x: 7, y: 1 } })).setOrigin(0.5);
     if (ds.streak > 0) {
       this.add.text(w / 2, 583, s.streak(ds.streak), ts(19, '#ffffff', { stroke: '#5a3b22', strokeThickness: 4 })).setOrigin(0.5);
     }

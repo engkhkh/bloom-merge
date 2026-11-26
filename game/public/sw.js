@@ -1,5 +1,5 @@
 // Service worker: lets Bloom Merge work offline after the first visit.
-const CACHE = 'bloom-merge-v14';
+const CACHE = 'bloom-merge-v15';
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./', './index.html', './manifest.webmanifest'])));

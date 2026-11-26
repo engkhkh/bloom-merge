@@ -9,6 +9,7 @@ import { t, isRTL, lang } from '../i18n';
 import { dailyLevel, dailySeed, seededRandom, recordDaily, dailyStatus, dailyAlbum } from '../daily';
 import { recordMerge, updateStats, Visitor } from '../album';
 import { Custom, toLevel } from '../custom';
+import { track, drops, addDrops, Quest } from '../quests';
 
 const HEARTS = ['❤️', '💙', '💛', '💚'];
 const P_COLORS = ['#d63b3b', '#2f6fd6', '#c99700', '#2f9a3a'];
@@ -34,6 +35,9 @@ export class GameScene extends Phaser.Scene {
   private history: Snapshot[] = [];
   private undosLeft = 0;
   private undoBtn?: Phaser.GameObjects.Text;
+  private waterBtn?: Phaser.GameObjects.Text;
+  private waterArmed = false;
+  private streak = 0;
   private goalText!: Phaser.GameObjects.Text;
   private finished = false;
   private daily = false;
@@ -101,6 +105,16 @@ export class GameScene extends Phaser.Scene {
       this.undoBtn.on('pointerup', () => this.undo());
     } else this.undoBtn = undefined;
 
+    // Magic Water (wild card): tap the button, then tap any plant to grow it one size. Free move.
+    this.streak = 0;
+    this.waterArmed = false;
+    if (!this.daily && !this.family) {
+      this.waterBtn = this.add.text(isRTL() ? w - 46 : 46, 172, '', ts(22, '#ffffff', {
+        fontStyle: 'bold', backgroundColor: '#2f8fd6', padding: { x: 12, y: 4 }, rtl: false
+      })).setOrigin(0.5).setInteractive({ useHandCursor: true });
+      this.waterBtn.on('pointerup', () => this.toggleWater());
+    } else this.waterBtn = undefined;
+
     // Garden bed
     drawBoardBed(this, this.originX, this.originY, boardPx);
     for (let i = 0; i < SIZE * SIZE; i++) {
@@ -131,6 +145,8 @@ export class GameScene extends Phaser.Scene {
       if (!this.finished) obj.setPosition(x, y);
     });
     this.input.on('dragend', (p: Phaser.Input.Pointer, obj: Tile) => {
+      const cell = obj.getData('cell') as number;
+      if (this.waterArmed && this.cellAt(p.worldX, p.worldY) === cell) { this.useWater(obj, cell); return; }
       this.handleDrop(obj, p.worldX, p.worldY);
     });
 
@@ -258,7 +274,9 @@ export class GameScene extends Phaser.Scene {
 
     if (result === 'merge') {
       const lvl = this.board.cells[to]!;
-      const pts = 10 * (lvl + 1) * (lvl + 1);
+      this.streak++;
+      const combo = this.streak >= 3;
+      const pts = 10 * (lvl + 1) * (lvl + 1) * (combo ? 2 : 1);
       this.score += pts;
       if (this.family) this.pScores[this.turn % this.family] += pts;
       Sfx.merge(lvl);
@@ -266,9 +284,19 @@ export class GameScene extends Phaser.Scene {
       this.endTutorial();
       this.toast(recordMerge(lvl));
       this.burst(to, lvl);
-      this.floatText(to, `+${pts}`);
+      this.floatText(to, combo ? `+${pts}  ${t().comboX2}` : `+${pts}`);
       this.board.thawAround(to).forEach(n => this.thaw(n));
+      this.questDone(track('merge'));
+      if (lvl === 3) this.questDone(track('grow3'));
+      if (lvl >= 4) this.questDone(track('grow4'));
+      if (this.streak === 3) this.questDone(track('combo'));
+      // Merge-5 bonus: every 5 merges in a row earns a Magic Water drop (not in Daily/Family)
+      if (this.streak % 5 === 0 && !this.daily && !this.family) {
+        addDrops(1);
+        this.banner(t().streakReward);
+      }
     } else {
+      this.streak = 0;
       Sfx.drop();
     }
 
@@ -314,6 +342,11 @@ export class GameScene extends Phaser.Scene {
     }
     const have = Math.min(this.board.count(this.level.goalLevel), this.level.goalCount);
     this.goalText.setText(s.goal(ITEMS[this.level.goalLevel], s.items[this.level.goalLevel], have, this.level.goalCount));
+    if (this.waterBtn) {
+      const n = drops();
+      this.waterBtn.setText(`💧 ${n}`).setAlpha(n > 0 ? 1 : 0.45)
+        .setBackgroundColor(this.waterArmed ? '#e0762b' : '#2f8fd6');
+    }
     if (this.undoBtn) {
       const n = this.undosLeft === Infinity ? '∞' : String(this.undosLeft);
       this.undoBtn.setText(`↶ ${n}`).setAlpha(this.history.length && this.undosLeft > 0 ? 1 : 0.45);
@@ -352,6 +385,9 @@ export class GameScene extends Phaser.Scene {
         save(data);
       }
       Sfx.win();
+      this.questDone(track('win'));
+      if (stars === 3 && !this.kidMode) this.questDone(track('stars3'));
+      if (this.daily) this.questDone(track('daily'));
     } else {
       Sfx.lose();
     }
@@ -475,5 +511,54 @@ export class GameScene extends Phaser.Scene {
     Sfx.drop();
     this.lastAction = this.time.now;
     this.updateHud();
+  }
+
+  private toggleWater() {
+    if (this.finished) return;
+    if (!this.waterArmed && drops() <= 0) { Sfx.bad(); this.banner(t().noWater); return; }
+    this.waterArmed = !this.waterArmed;
+    Sfx.pick();
+    if (this.waterArmed) this.banner(t().waterHint);
+    this.updateHud();
+  }
+
+  /** Magic Water: grow the tapped plant one size, without using a move */
+  private useWater(obj: Tile, i: number) {
+    const p = this.cellPos(i);
+    obj.setPosition(p.x, p.y).setScale(1).setDepth(0);
+    this.history.push(this.snapshot());
+    if (!this.board.grow(i)) { this.history.pop(); Sfx.bad(); return; }
+    addDrops(-1);
+    this.waterArmed = false;
+    const lvl = this.board.cells[i]!;
+    this.makeTile(i);
+    this.score += 10 * (lvl + 1) * (lvl + 1);
+    Sfx.merge(lvl);
+    buzz(20);
+    // water splash
+    for (let k = 0; k < 10; k++) {
+      const d = this.add.text(p.x, p.y - 30, '💧', { fontSize: '18px' }).setOrigin(0.5).setDepth(15);
+      this.tweens.add({ targets: d, x: p.x + Phaser.Math.Between(-60, 60), y: p.y + Phaser.Math.Between(-10, 50), alpha: 0,
+        duration: 600, ease: 'Quad.Out', onComplete: () => d.destroy() });
+    }
+    this.toast(recordMerge(lvl));
+    this.board.thawAround(i).forEach(n => this.thaw(n));
+    if (lvl === 3) this.questDone(track('grow3'));
+    if (lvl >= 4) this.questDone(track('grow4'));
+    this.lastAction = this.time.now;
+    this.updateHud();
+    this.checkEnd();
+  }
+
+  /** Short message under the top panel */
+  private banner(msg: string) {
+    const b = this.add.text(this.scale.width / 2, 238, msg, ts(20, '#ffffff', {
+      fontStyle: 'bold', backgroundColor: '#2f8fd6', padding: { x: 14, y: 6 }
+    })).setOrigin(0.5).setDepth(30);
+    this.tweens.add({ targets: b, alpha: 0, delay: 1800, duration: 400, onComplete: () => b.destroy() });
+  }
+
+  private questDone(qs: Quest[]) {
+    for (const q of qs) this.banner(t().questDone(lang() === 'ar' ? q.ar : q.en));
   }
 }

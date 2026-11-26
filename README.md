@@ -9,6 +9,7 @@ One codebase runs on the **web**, **Android**, **iPhone** and **Windows/Mac**.
 ## Features
 - 30 levels in three worlds: Sunny Meadow, Rocky Garden (rocks block cells) and Frozen Pond (frozen plants thaw when you merge next to them)
 - 📅 Daily Challenge: the same puzzle for everyone each day, with best score and 🔥 streak
+- 📜 Daily Quests that reward 💧 Magic Water (grow any plant one size), and merge combos
 - 👪 Family Garden: 2–4 players take turns on one device
 - 📖 Garden Album: 12 animal visitors to collect
 - 🏡 My Garden: decorate your own garden with the plants you grew, while your animals wander around

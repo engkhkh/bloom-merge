@@ -53,6 +53,14 @@ export class Board {
     return 'invalid';
   }
 
+  /** Magic Water: grow one plant by a level in place (not frozen, not already the biggest) */
+  grow(i: number): boolean {
+    const c = this.cells[i];
+    if (c === null || c >= MAX_LEVEL || this.frozen.has(i) || this.blocked.has(i)) return false;
+    this.cells[i] = c + 1;
+    return true;
+  }
+
   count(level: number) { return this.cells.filter(c => c === level).length; }
 
   /** Two cells holding the same item that can still grow, or null */

@@ -5,6 +5,7 @@ import { ITEMS } from '../objects/MergeLogic';
 import { DECOR_LEVELS, MAX_PLACED, Placed, available, placed, savePlaced } from '../garden';
 import { VISITORS, unlockedIds } from '../album';
 import { Sfx, buzz } from '../audio';
+import { track } from '../quests';
 
 const LAWN_TOP = 250;
 const LAWN_BOTTOM = 720;
@@ -91,6 +92,7 @@ export class GardenScene extends Phaser.Scene {
     this.addPlant(p, true);
     Sfx.merge(p.l);
     buzz(12);
+    track('plant');
     this.refreshTray();
   }
 
