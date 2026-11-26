@@ -15,7 +15,7 @@ Games compared: **Triple Town** (Spry Fox, the original merge game), **Merge Dra
 | Two modes in one | Merge Gardens: merge + match-3 levels | levels + Daily + Family + Editor | same |
 | Energy timers / paid currency | All of them; reviews complain about energy | none (by design) | **none (kept on purpose: family-friendly, no pressure)** |
 | Ads / in-app purchases | All of them | none | none |
-| Story / characters | Merge Gardens, Merge Mansion | none | not added (big content job; idea for later) |
+| Story / characters | Merge Gardens, Merge Mansion | none | **v0.15: Granny Salma, 6 short chapters across the 3 worlds** |
 | Cross-device sync | Merge Gardens via account | none | not added (would need accounts and personal data) |
 
 ## Deliberately not copied

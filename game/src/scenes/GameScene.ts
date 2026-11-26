@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { Board, ITEMS } from '../objects/MergeLogic';
 import { LEVELS, Level } from '../levels';
 import { load, save } from '../save';
-import { drawBackground, drawBoardBed, drawCell, drawRock, drawIce, makeBadge, button, ts, FONT } from '../art';
+import { drawBackground, drawBoardBed, drawCell, drawRock, drawIce, makeBadge, button, ts, FONT, showStory } from '../art';
 import { Sfx, buzz } from '../audio';
 import { motionOK } from '../settings';
 import { t, isRTL, lang } from '../i18n';
@@ -10,6 +10,7 @@ import { dailyLevel, dailySeed, seededRandom, recordDaily, dailyStatus, dailyAlb
 import { recordMerge, updateStats, Visitor } from '../album';
 import { Custom, toLevel } from '../custom';
 import { track, drops, addDrops, Quest } from '../quests';
+import { beatFor, seen, markSeen, Beat } from '../story';
 
 const HEARTS = ['❤️', '💙', '💛', '💚'];
 const P_COLORS = ['#d63b3b', '#2f6fd6', '#c99700', '#2f9a3a'];
@@ -155,7 +156,11 @@ export class GameScene extends Phaser.Scene {
     // Gentle hint: after 7 s without a move, wiggle two plants that can merge
     this.lastAction = this.time.now;
     this.time.addEvent({ delay: 1000, loop: true, callback: () => this.maybeHint() });
-    if (this.level.id === 1 && !this.family && !load().tutorialDone) this.time.delayedCall(600, () => this.showTutorial());
+    // Story beat before the first level of each world, then the tutorial on level 1
+    const intro = !this.family && !this.daily && !this.custom ? beatFor('before', this.level.id) : undefined;
+    this.withStory(intro, () => {
+      if (this.level.id === 1 && !this.family && !load().tutorialDone) this.time.delayedCall(600, () => this.showTutorial());
+    });
     if (this.level.id === 11 || this.level.id === 21) {
       const tip = this.add.text(this.scale.width / 2, 238, this.level.id === 21 ? t().iceTip : t().rockTip, ts(21, '#ffffff', {
         fontStyle: 'bold', backgroundColor: '#6b737b', padding: { x: 16, y: 8 }
@@ -393,7 +398,9 @@ export class GameScene extends Phaser.Scene {
     }
     if (this.daily) { newBest = recordDaily(this.score, won); this.toast(dailyAlbum(won)); }
 
-    this.time.delayedCall(450, () => {
+    // Chapter ending story (levels 10, 20, 30), then the result card
+    const story = won && !this.daily && !this.custom ? beatFor('after', this.level.id) : undefined;
+    this.time.delayedCall(450, () => this.withStory(story, () => {
       this.add.rectangle(w / 2, h / 2, w, h, 0x000000, 0.45).setDepth(20).setInteractive();
       const card = this.add.graphics().setDepth(21);
       card.fillStyle(0xfff7d6, 1); card.fillRoundedRect(w / 2 - 220, h / 2 - 200, 440, 400, 30);
@@ -426,7 +433,7 @@ export class GameScene extends Phaser.Scene {
       b1.container.setDepth(22);
       const b2 = button(this, w / 2, h / 2 + 145, this.custom ? s.editorTitle : s.menuBtn, () => this.custom ? this.scene.start('Editor', { custom: this.custom }) : this.scene.start('Menu'), 280);
       b2.container.setDepth(22);
-    });
+    }));
   }
 
   /** Show "A Ladybug visited your garden!" banners, one after another */
@@ -560,5 +567,12 @@ export class GameScene extends Phaser.Scene {
 
   private questDone(qs: Quest[]) {
     for (const q of qs) this.banner(t().questDone(lang() === 'ar' ? q.ar : q.en));
+  }
+
+  /** Show a story beat once (if there is an unseen one), then continue */
+  private withStory(beat: Beat | undefined, next: () => void) {
+    if (!beat || seen(beat.id)) { next(); return; }
+    markSeen(beat.id);
+    showStory(this, beat, next);
   }
 }

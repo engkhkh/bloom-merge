@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import { isRTL } from './i18n';
 import { season, palette, Season } from './season';
 import { motionOK, markersOn } from './settings';
+import type { Beat } from './story';
 
 // One rounded font that has both Latin and Arabic letters
 export const FONT = '"Baloo Bhaijaan 2", "Segoe UI", Tahoma, Arial, sans-serif';
@@ -227,4 +228,36 @@ export function drawIce(scene: Phaser.Scene, s: number) {
   g.lineBetween(h - 30, h - 8, h - 12, h - 26); // crack
   g.lineBetween(h - 12, h - 26, h - 20, h - 34);
   return g;
+}
+
+/** Granny Salma's story card: tap to turn the pages, then onDone() */
+export function showStory(scene: Phaser.Scene, beat: Beat, onDone: () => void) {
+  const w = scene.scale.width, h = scene.scale.height;
+  const L = (isRTL() ? 'ar' : 'en') as 'en' | 'ar';
+  const objs: Phaser.GameObjects.GameObject[] = [];
+  const dim = scene.add.rectangle(w / 2, h / 2, w, h, 0x000000, 0.5).setDepth(60).setInteractive();
+  const card = scene.add.graphics().setDepth(61);
+  card.fillStyle(0x000000, 0.2); card.fillRoundedRect(24, h - 372, w - 48, 330, 30);
+  card.fillStyle(0xfff7d6, 1); card.fillRoundedRect(24, h - 380, w - 48, 330, 30);
+  card.lineStyle(6, 0xe0a526, 1); card.strokeRoundedRect(24, h - 380, w - 48, 330, 30);
+  const face = scene.add.text(w / 2, h - 380, beat.emoji, { fontSize: '84px' }).setOrigin(0.5).setDepth(62);
+  const name = scene.add.text(w / 2, h - 318, L === 'ar' ? 'الجدة سلمى' : 'Granny Salma', ts(22, '#c97a00', { fontStyle: 'bold' })).setOrigin(0.5).setDepth(62);
+  const text = scene.add.text(w / 2, h - 210, '', ts(24, '#2f5d2a', { align: 'center', wordWrap: { width: w - 110 }, lineSpacing: 6 }))
+    .setOrigin(0.5).setDepth(62);
+  const more = scene.add.text(w / 2, h - 86, '', ts(18, '#8a6a3a', { fontStyle: 'bold' })).setOrigin(0.5).setDepth(62);
+  objs.push(dim, card, face, name, text, more);
+  if (motionOK()) scene.tweens.add({ targets: face, y: h - 390, duration: 900, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
+  let page = 0;
+  const show = () => {
+    text.setText(beat.pages[page][L]);
+    const last = page === beat.pages.length - 1;
+    more.setText(L === 'ar' ? (last ? 'المس للمتابعة' : 'المس للتالي ◀') : (last ? 'Tap to continue' : 'Tap for more ▶'));
+  };
+  show();
+  dim.on('pointerup', () => {
+    page++;
+    if (page < beat.pages.length) { show(); return; }
+    objs.forEach(o => o.destroy());
+    onDone();
+  });
 }

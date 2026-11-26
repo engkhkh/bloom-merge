@@ -84,6 +84,10 @@ It then opens full-screen like a normal app and works offline.
 - **Vibration** on merges (stronger for big plants). It follows the Sound setting.
 - **Music pauses** when the phone locks or you switch apps, and resumes when you come back
 
+### Added in version 0.15
+- **📖 Story with Granny Salma** (the "story" gap from the competitor comparison, kept short and gentle). She introduces each world before levels 1, 11 and 21, and celebrates after levels 10, 20 and 30. Each chapter shows once, and you can replay them with **📖 Story** on the Album screen. It's in English and Arabic.
+- 56 tests (adds: every story page has both languages, and every world has a start and an end)
+
 ### Added in version 0.14 (ideas from similar games)
 The game was compared with Triple Town, Merge Dragons, Merge Magic, Merge Gardens and Merge Mansion; see `marketing/competitor-comparison.md`.
 - **Combos** (from the Merge Dragons/Magic merge-5 bonus): 3 merges in a row score double, and every 5 merges in a row earn +1 💧
@@ -179,3 +183,4 @@ Week 5: art and sound. Week 7: PWA and web release. Week 8: Capacitor mobile app
 - `src/garden.ts`, `src/scenes/GardenScene.ts` – My Garden
 - `src/settings.ts`, `src/scenes/SettingsScene.ts` – Settings and accessibility
 - `src/quests.ts`, `src/scenes/QuestsScene.ts` – Daily Quests and Magic Water
+- `src/story.ts` – Granny Salma's story (edit the text here)

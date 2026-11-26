@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
-import { drawBackground, ts } from '../art';
+import { drawBackground, ts, showStory } from '../art';
+import { STORY, seen } from '../story';
 import { t, lang, isRTL } from '../i18n';
 import { VISITORS, unlockedIds } from '../album';
 
@@ -18,6 +19,16 @@ export class AlbumScene extends Phaser.Scene {
     back.on('pointerup', () => this.scene.start('Menu'));
 
     this.add.text(w / 2, 82, s.albumTitle, ts(46, '#ffffff', { fontStyle: 'bold', stroke: '#2f5d2a', strokeThickness: 9 })).setOrigin(0.5);
+    // Replay the story chapters you've already seen
+    const seenBeats = STORY.filter(b => seen(b.id));
+    if (seenBeats.length) {
+      const st = this.add.text(isRTL() ? 24 : w - 24, 18, s.storyBtn, ts(22, '#ffffff', { stroke: '#2f5d2a', strokeThickness: 5 }))
+        .setOrigin(isRTL() ? 0 : 1, 0).setInteractive({ useHandCursor: true });
+      st.on('pointerup', () => {
+        const play = (i: number) => { if (i < seenBeats.length) showStory(this, seenBeats[i], () => play(i + 1)); };
+        play(0);
+      });
+    }
     this.add.text(w / 2, 138, s.albumCount(have.size, VISITORS.length), ts(22, '#2f5d2a', { fontStyle: 'bold' })).setOrigin(0.5);
 
     // 3 columns x 4 rows of cards

@@ -24,6 +24,7 @@ export interface SaveData {
   markers?: boolean;
   drops?: number;                       // Magic Water boosters
   quests?: { date: string; progress: Record<string, number>; claimed: string[] };
+  story?: string[];                     // story beats already shown
 }
 
 export function load(): SaveData {
