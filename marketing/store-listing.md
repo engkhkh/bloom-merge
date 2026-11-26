@@ -1,4 +1,4 @@
-# Bloom Merge – Store Listing
+# Bloom Merge – Store Listing (v1.0)
 
 Use this text for Google Play, the Apple App Store, the Microsoft Store and itch.io.
 
@@ -9,7 +9,7 @@ Use this text for Google Play, the Apple App Store, the Microsoft Store and itch
 **App name (30 characters max):** Bloom Merge: Garden Puzzle
 
 **Short description (80 characters max):**
-Merge seeds into flowers and trees in a calm garden puzzle for the whole family.
+Merge seeds into flowers and trees, and help Granny Salma's garden bloom again!
 
 **Full description:**
 
@@ -18,23 +18,30 @@ Grow a beautiful garden one merge at a time! 🌱
 Drag two matching plants together and watch them grow:
 🌰 Seed → 🌱 Sprout → 🌷 Tulip → 🌻 Sunflower → 🌳 Tree → 🍎 Apple Tree
 
-Bloom Merge is a relaxing puzzle game for everyone: children, parents and grandparents.
-Each level takes only a few minutes, so it is perfect for a short break.
+Granny Salma's garden has gone quiet. Help her bring the meadow back to life, grow trees between the rocks, and thaw the plants frozen in her icy pond.
+
+Bloom Merge is a relaxing puzzle game for everyone: children, parents and grandparents. Each level takes only a few minutes, so it is perfect for a short break.
 
 **Features**
 • Simple drag-and-drop play that anyone can learn in seconds
-• 10 hand-made levels with goals and stars to collect
+• 30 levels in 3 worlds: Sunny Meadow, Rocky Garden and Frozen Pond
 • 📅 Daily Challenge: a new puzzle every day, the same for every player. Build your streak! 🔥
+• 📜 Daily Quests: earn 💧 Magic Water, which grows any plant in one tap
+• 🏡 My Garden: decorate your own garden with everything you grow
+• 📖 Garden Album: 12 animal friends to collect, who come to visit your garden
+• 👪 Family Garden: 2–4 players take turns on one device
+• ✏️ Level Editor: make your own puzzles and share them with a code
+• 🌸❄️🌙🎉 Seasonal gardens: spring, summer, autumn, winter, Ramadan and Eid
 • 🧸 Kid Mode: no move limit, no pressure, just play
-• Bright garden art, gentle music and happy sounds
+• ↶ Undo, hints and a gentle tutorial
+• ♿ Colour-blind markers, reduce motion, sound and vibration switches
 • English and Arabic
-• Plays offline, no internet needed
-• No ads in Kid Mode, and no chat with strangers
+• Plays offline. No ads, no in-app purchases, no energy timers, no accounts, no data collected
 
 Plant your first seed today! 🌻
 
 **Category:** Puzzle (secondary: Family / Casual)
-**Tags:** merge, puzzle, garden, relaxing, family, kids, offline, casual
+**Tags:** merge, puzzle, garden, relaxing, family, kids, offline, casual, no ads
 **Content rating:** Everyone (PEGI 3 / ESRB E)
 
 ---
@@ -44,7 +51,7 @@ Plant your first seed today! 🌻
 **اسم التطبيق:** حديقة الدمج: لعبة ألغاز
 
 **الوصف المختصر:**
-ادمج البذور لتصبح أزهارًا وأشجارًا في لعبة ألغاز هادئة لكل العائلة.
+ادمج البذور لتصبح أزهارًا وأشجارًا، وساعد الجدة سلمى لتزهر حديقتها من جديد!
 
 **الوصف الكامل:**
 
@@ -53,33 +60,53 @@ Plant your first seed today! 🌻
 اسحب نبتتين متشابهتين معًا وشاهدهما تكبران:
 🌰 بذرة ← 🌱 برعم ← 🌷 توليب ← 🌻 عباد الشمس ← 🌳 شجرة ← 🍎 شجرة تفاح
 
-حديقة الدمج لعبة ألغاز مريحة للجميع: الأطفال والآباء والأجداد.
-كل مرحلة تأخذ دقائق قليلة فقط، فهي مثالية لاستراحة قصيرة.
+حديقة الجدة سلمى أصبحت هادئة وفارغة. ساعدها لتعيد الحياة إلى المرج، وتزرع الأشجار بين الصخور، وتذيب الجليد عن نباتات البركة المتجمدة.
+
+حديقة الدمج لعبة ألغاز مريحة للجميع: الأطفال والآباء والأجداد. كل مرحلة تأخذ دقائق قليلة فقط، فهي مثالية لاستراحة قصيرة.
 
 **المميزات**
 • لعب سهل بالسحب والإفلات يتعلمه أي شخص في ثوانٍ
-• 10 مراحل مع أهداف ونجوم للجمع
+• 30 مرحلة في 3 عوالم: المرج المشمس، الحديقة الصخرية، البركة المتجمدة
 • 📅 تحدي اليوم: لغز جديد كل يوم، نفس اللغز لكل اللاعبين. حافظ على أيامك المتتالية! 🔥
+• 📜 المهام اليومية: اربح 💧 الماء السحري الذي يكبّر أي نبتة بلمسة
+• 🏡 حديقتي: زيّن حديقتك الخاصة بكل ما تزرعه
+• 📖 ألبوم الحديقة: 12 حيوانًا لتجمعها وتزور حديقتك
+• 👪 حديقة العائلة: من 2 إلى 4 لاعبين بالدور على جهاز واحد
+• ✏️ محرر المراحل: صمم ألغازك وشاركها برمز
+• 🌸❄️🌙🎉 حدائق المواسم: الربيع والصيف والخريف والشتاء ورمضان والعيد
 • 🧸 وضع الأطفال: بدون حد للحركات وبدون ضغط
-• رسومات حديقة مبهجة وموسيقى هادئة وأصوات لطيفة
+• ↶ تراجع وتلميحات ودرس تعليمي لطيف
+• ♿ علامات لعمى الألوان، وتقليل الحركة، ومفاتيح للصوت والاهتزاز
 • اللغة العربية والإنجليزية
-• تعمل بدون إنترنت
-• بدون إعلانات في وضع الأطفال، وبدون محادثة مع الغرباء
+• تعمل بدون إنترنت. بدون إعلانات، بدون مشتريات، بدون مؤقتات طاقة، بدون حسابات، ولا نجمع أي بيانات
 
 ازرع أول بذرة اليوم! 🌻
 
 ---
 
-## Screenshots (in the `screenshots` folder)
-| File | Use |
+## Screenshots (in the `screenshots` folder, 1080×1920)
+| File | Shows |
 |---|---|
-| `01-menu-en.png`, `02-game-en.png`, `03-win-en.png` | Phone screenshots, English (1080×1920) |
-| `04-menu-ar.png`, `05-game-ar.png` | Phone screenshots, Arabic (1080×1920) |
+| `01-menu-en.png` | Menu, World 3, autumn garden |
+| `02-game-en.png` | Level 24 with frozen plants (winter) |
+| `03-garden-en.png` | My Garden with animals |
+| `04-album-en.png` | Garden Album |
+| `05-quests-en.png` | Daily Quests |
+| `06-story-en.png` | Granny Salma's story |
+| `07-menu-ar.png` | Arabic menu, Ramadan garden |
+| `08-garden-ar.png` | Arabic My Garden, Eid |
 | `feature-graphic.png` | Google Play feature graphic (1024×500) |
 | `icon-512.png` | Store icon (512×512) |
 
+## Links for the store forms
+- Website: https://engkhkh.github.io/bloom-merge/
+- Privacy policy: https://engkhkh.github.io/bloom-merge/privacy.html
+- Contact email: khilel208@gmail.com
+
 ## Before you publish
-- [x] Privacy policy: `game/public/privacy.html` (English + Arabic). Contact email: khilel208@gmail.com. Use its web address https://engkhkh.github.io/bloom-merge/privacy.html in the store forms.
-- [ ] Google Play: fill in the "Target audience and content" form (includes children → Families policy)
-- [ ] Apple: set the age rating to 4+
+- [x] Privacy policy online (English + Arabic)
+- [x] Screenshots and feature graphic for v1.0
+- [ ] Google Play: create the signing key and add the 4 GitHub secrets (see `game/README.md`), then upload `bloom-merge-play.aab`
+- [ ] Google Play: fill in the "Target audience and content" form (includes children → Families policy). Data safety form: "No data collected".
+- [ ] Apple: needs a Mac with Xcode; set the age rating to 4+
 - [ ] Add a parent gate if you ever add in-app purchases

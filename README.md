@@ -1,5 +1,7 @@
 # 🌻 Bloom Merge · حديقة الدمج
 
+**Play now:** https://engkhkh.github.io/bloom-merge/ · **Download:** [Releases](https://github.com/engkhkh/bloom-merge/releases) (Windows, Android) · [Changelog](CHANGELOG.md)
+
 A calm merge-and-grow garden puzzle for the whole family. Drag two matching plants together to grow them:
 
 🌰 Seed → 🌱 Sprout → 🌷 Tulip → 🌻 Sunflower → 🌳 Tree → 🍎 Apple Tree
