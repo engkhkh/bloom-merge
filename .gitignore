@@ -4,3 +4,7 @@ game/release/
 .DS_Store
 Thumbs.db
 windows-app/
+
+# Signing keys must never be committed
+*.jks
+*.keystore

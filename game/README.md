@@ -127,6 +127,12 @@ The game was compared with Triple Town, Merge Dragons, Merge Magic, Merge Garden
 ## Publish on Google Play (signed release)
 Google Play needs the app signed with **your own key**. Make it once and keep it safe: if you lose it you can't update the app.
 
+**Easiest: run the setup script** from the repo folder in PowerShell. It creates the key and adds the 4 GitHub secrets for you (automatically if the GitHub CLI `gh` is installed, otherwise it tells you what to paste):
+```
+powershell -ExecutionPolicy Bypass -File scripts\setup-play-signing.ps1
+```
+Or do it by hand:
+
 1. Create the key (needs Java, which comes with Android Studio). In a terminal:
    ```
    keytool -genkeypair -v -keystore bloom-merge.jks -alias bloom -keyalg RSA -keysize 2048 -validity 10000

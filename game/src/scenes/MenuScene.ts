@@ -11,6 +11,7 @@ import { unlockedIds } from '../album';
 import { season, cyclePreview, SEASON_ICON } from '../season';
 import { motionOK } from '../settings';
 import { unclaimedCount } from '../quests';
+import { isWeb, getTheApp } from '../platform';
 import { dailyStatus } from '../daily';
 
 export class MenuScene extends Phaser.Scene {
@@ -119,7 +120,15 @@ export class MenuScene extends Phaser.Scene {
 
     button(this, w / 2, 786, s.settings, () => this.scene.start('Settings'), 340, 0x3f7fbf);
 
-    this.add.text(w / 2, 852, s.kidHint, ts(17, '#ffffff', { stroke: '#2f5d2a', strokeThickness: 4 })).setOrigin(0.5);
+    // On the website, offer the installable / downloadable app; in the apps, show the Kid Mode tip
+    if (isWeb()) {
+      const get = this.add.text(w / 2, 852, s.getApp, ts(19, '#ffffff', {
+        fontStyle: 'bold', backgroundColor: '#2f5d2a', padding: { x: 16, y: 6 }
+      })).setOrigin(0.5).setInteractive({ useHandCursor: true });
+      get.on('pointerup', () => getTheApp());
+    } else {
+      this.add.text(w / 2, 852, s.kidHint, ts(17, '#ffffff', { stroke: '#2f5d2a', strokeThickness: 4 })).setOrigin(0.5);
+    }
   }
 
   /** Pop-up to pick 2, 3 or 4 players for Family Garden */

@@ -2,6 +2,8 @@
 
 ## 1.0.0 (26 Nov 2026) – first full release
 - New store screenshots (8, English and Arabic), feature graphic and store text covering every feature
+- Website: **⬇ Get the app** button: offers to install the game (PWA) or opens the Windows/Android downloads
+- `scripts/setup-play-signing.ps1`: one-command Google Play signing key + GitHub secrets setup
 - Everything from 0.1–0.15 below
 
 ## 0.15.0
